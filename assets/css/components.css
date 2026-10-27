@@ -302,16 +302,41 @@
 }
 
 .faq summary {
+  position: relative;
   padding-block: var(--espaco-5);
-  margin-left: 1.5rem; /* o triângulo fica fora do summary: este recuo o traz para dentro da coluna */
+  padding-left: 1.5rem; /* espaço do triângulo */
   font-family: var(--fonte-titulo);
   font-size: var(--texto-4);
   cursor: pointer;
-  list-style-position: outside;
+  list-style: none; /* sem o marcador nativo: cada navegador o desenha de um jeito */
 }
 
-.faq summary::marker {
-  color: var(--tungstenio);
+.faq summary::-webkit-details-marker {
+  display: none; /* marcador nativo do Safari */
+}
+
+/* Triângulo próprio, igual em todos os navegadores; gira quando a resposta abre. */
+.faq summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--espaco-5) + 0.825em - 0.3em); /* centro da 1ª linha (altura 1,65em) */
+  width: 0.5em;
+  height: 0.6em;
+  background: var(--tungstenio);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.faq details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+/* Alto contraste do Windows troca as cores de fundo; o triângulo usa a cor do texto. */
+@media (forced-colors: active) {
+  .faq summary::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
 }
 
 .faq details p {
