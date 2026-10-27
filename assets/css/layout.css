@@ -67,6 +67,7 @@
 }
 
 .hero__texto {
+  container-type: inline-size; /* o título mede a própria coluna (unidade cqi) */
   display: grid;
   gap: var(--espaco-6);
   justify-items: start;
