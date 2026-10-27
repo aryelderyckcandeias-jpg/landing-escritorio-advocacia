@@ -2,6 +2,6 @@
   "extends": ["html-validate:recommended"],
   "rules": {
     "no-trailing-whitespace": "off",
-    "heading-level": ["error", { "allowMultiple": false }]
+    "heading-level": ["error", { "allowMultipleH1": false }]
   }
 }
