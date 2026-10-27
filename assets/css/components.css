@@ -64,8 +64,13 @@
 }
 
 /* Primeira tela */
+/*
+  O tamanho do título acompanha a largura da coluna (cqi = 1% dela), não a da janela.
+  "Defesa criminal" ocupa cerca de 7,5 vezes o tamanho da fonte: com 12.5cqi
+  a linha sempre cabe, e o título fica em 3 linhas no desktop.
+*/
 .hero h1 {
-  font-size: var(--texto-7);
+  font-size: clamp(2.75rem, 12.5cqi, 5.25rem);
   font-weight: 500;
 }
 
@@ -255,6 +260,7 @@
 
 .faq summary {
   padding-block: var(--espaco-5);
+  margin-left: 1.5rem; /* o triângulo fica fora do summary: este recuo o traz para dentro da coluna */
   font-family: var(--fonte-titulo);
   font-size: var(--texto-4);
   cursor: pointer;
@@ -266,6 +272,7 @@
 }
 
 .faq details p {
+  margin-left: 1.5rem; /* alinha a resposta com o texto da pergunta */
   padding-bottom: var(--espaco-5);
   color: var(--papel-suave);
 }

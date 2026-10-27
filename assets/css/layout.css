@@ -40,11 +40,21 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: min(46rem, calc(100svh - 4.25rem));
   display: flex;
   align-items: center;
-  padding-block: var(--espaco-8);
+  padding-block: var(--espaco-secao);
   isolation: isolate;
+}
+
+/*
+  No desktop a primeira tela ocupa a altura da janela. No celular, não:
+  a altura vem do conteúdo, e o começo da seção seguinte aparece no pé
+  da tela, mostrando que a página continua.
+*/
+@media (min-width: 60rem) {
+  .hero {
+    min-height: min(46rem, calc(100svh - 4.25rem));
+  }
 }
 
 .hero__miolo {
@@ -67,6 +77,7 @@
 }
 
 .hero__texto {
+  container-type: inline-size; /* o título mede a própria coluna (unidade cqi) */
   display: grid;
   gap: var(--espaco-6);
   justify-items: start;
@@ -81,7 +92,20 @@
 
 /* Seções */
 .secao {
-  padding-block: var(--espaco-8);
+  padding-block: var(--espaco-secao);
+}
+
+/*
+  Seções seguidas com o mesmo fundo não somam dois respiros inteiros.
+  Depois da primeira tela, o respiro dela basta (o título "Atuação" aparece
+  inteiro no pé da tela). Entre duas seções comuns, meio respiro a mais.
+*/
+.hero + .secao:not(.secao--bordo) {
+  padding-top: 0;
+}
+
+.secao:not(.secao--bordo) + .secao:not(.secao--bordo) {
+  padding-top: calc(var(--espaco-secao) / 2);
 }
 
 .secao--bordo {
@@ -130,7 +154,7 @@
   gap: var(--espaco-4);
   max-width: 46rem;
   margin-inline: auto;
-  padding: var(--espaco-8) var(--gutter);
+  padding: var(--espaco-secao) var(--gutter);
 }
 
 .texto-longo h2 {

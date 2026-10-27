@@ -49,11 +49,16 @@
   --espaco-6: 2rem;
   --espaco-7: 3rem;
   --espaco-8: clamp(4rem, 9vw, 7.5rem);
+  --espaco-secao: clamp(3.5rem, 7vw, 6rem); /* respiro de cada seção, em cima e embaixo */
 
   /* Medidas de layout */
   --largura: 72rem;
   --medida: 62ch;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Tarja (em "em", acompanham o tamanho de cada título) */
+  --tarja-vao: 0.06em; /* espaço entre as faixas de duas linhas */
+  --tarja-descida: 0.06em; /* faixas descem para cobrir ç, g, q */
 
   /* Movimento */
   --tempo-tarja: 900ms;
