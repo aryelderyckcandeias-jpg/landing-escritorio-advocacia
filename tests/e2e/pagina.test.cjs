@@ -1,6 +1,6 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { iniciar } = require('./helpers.cjs');
+const { iniciar, celular } = require('./helpers.cjs');
 
 let app;
 before(async () => { app = await iniciar(); });
@@ -110,3 +110,26 @@ test('servidor de teste não expõe arquivos ocultos (.git, .github)', async () 
   const resposta = await fetch(app.base + '/.git/config');
   assert.equal(resposta.status, 404);
 });
+
+// WCAG 2.5.8: alvos de toque com pelo menos 24x24 px. Links no meio de uma frase são exceção.
+for (const caminho of PAGINAS) {
+  test(`${caminho}: alvos de toque com pelo menos 24x24 px no celular`, async () => {
+    const ctx = await app.navegador.newContext({ viewport: { width: 390, height: 844 }, ...celular });
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + caminho);
+    const pequenos = await pagina.evaluate(() =>
+      [...document.querySelectorAll('a, button, summary, input, textarea')]
+        .filter((el) => !el.closest('.isca'))
+        .filter((el) => {
+          const b = el.getBoundingClientRect();
+          if (b.width === 0 && b.height === 0) return false; // invisível nesta largura
+          const frase = el.parentElement.textContent.trim();
+          const noMeioDaFrase = el.tagName === 'A' && frase !== el.textContent.trim();
+          return !noMeioDaFrase && (b.width < 24 || b.height < 24);
+        })
+        .map((el) => `${el.id || el.textContent.trim()}: ${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`),
+    );
+    assert.deepEqual(pequenos, []);
+    await ctx.close();
+  });
+}

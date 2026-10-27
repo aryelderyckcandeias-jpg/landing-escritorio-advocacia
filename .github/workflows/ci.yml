@@ -1,20 +1,26 @@
 name: CI
 
+# Roda em qualquer branch: dá para ver o resultado antes de juntar na main.
 on:
   pull_request:
   push:
-    branches: [main]
 
 permissions:
   contents: read
 
+# shell: bash liga o pipefail; sem ele, "npm run test:e2e | tee" esconderia a falha dos testes.
+defaults:
+  run:
+    shell: bash
+
 jobs:
   testes:
+    name: Testes (Chromium)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -39,4 +45,38 @@ jobs:
         run: npm run test:unit
 
       - name: Testes E2E e de acessibilidade (axe)
-        run: npm run test:e2e
+        run: npm run test:e2e 2>&1 | tee e2e.log
+
+      - name: Resumo das falhas
+        if: failure()
+        run: bash scripts/resumo-falhas.sh e2e.log "Falhas no Chromium"
+
+  # Os mesmos testes no Firefox e no WebKit (motor do Safari).
+  navegadores:
+    name: E2E (${{ matrix.navegador }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        navegador: [firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Instalar o ${{ matrix.navegador }} do Playwright
+        run: npx playwright install --with-deps ${{ matrix.navegador }}
+
+      - name: Testes E2E e de acessibilidade (axe)
+        env:
+          NAVEGADOR: ${{ matrix.navegador }}
+        run: npm run test:e2e 2>&1 | tee e2e.log
+
+      - name: Resumo das falhas
+        if: failure()
+        run: bash scripts/resumo-falhas.sh e2e.log "Falhas no ${{ matrix.navegador }}"

@@ -41,7 +41,8 @@ Não há cor de acento viva. O contraste do texto (`--papel` sobre `--mogno`) de
 
 ### Tipografia
 
-- **Títulos:** Bodoni Moda, usada só em tamanhos grandes (traços finos somem em texto pequeno).
+- **Títulos:** Bodoni Moda, usada só em tamanhos grandes (traços finos somem em texto pequeno). Usamos o arquivo com tamanho óptico fixo (eixo `opsz` em 11): o arquivo com tamanho óptico automático deixa traços finos demais em títulos grandes (o "4" das etapas quase some em tela comum).
+- **Título da primeira tela:** o tamanho acompanha a largura da coluna (`12cqi`), para ficar sempre em 3 linhas ("Defesa criminal / conduzida / com discrição."). Em celular deitado, também é limitado pela altura (`10svh`).
 - **Texto:** Hanken Grotesk.
 - Linhas de texto com menos de 75 caracteres e escala tipográfica definida em variáveis.
 - As fontes são **hospedadas no próprio repositório** (arquivos `woff2` com as licenças), sem Google Fonts, para não enviar o IP do visitante a terceiros e melhorar o desempenho.
@@ -69,7 +70,7 @@ Regras de conteúdo:
 
 ### Tarjas
 
-- Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`.
+- Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`. A cobertura é desenhada em faixas, uma por linha; o vão entre elas fica no topo de cada linha para a faixa cobrir acentos e descendentes (ç, g, q). Títulos tarjados usam altura de linha 1,15.
 - Um `IntersectionObserver` adiciona a classe de abertura quando cerca de 40% do título está visível, e para de observar em seguida (acontece uma vez só).
 - **Melhoria progressiva:** a cobertura só existe se a página marcar `html.js`. Sem JavaScript, o texto aparece normalmente.
 - Com `prefers-reduced-motion: reduce`, não há tarja nem animação: o texto aparece direto.
@@ -108,6 +109,10 @@ Regras de conteúdo:
 - Foco visível em todos os elementos interativos e navegação completa por teclado.
 - Formulário com `label` associado e erros textuais (não apenas cor).
 - Conteúdo legível com zoom de 200% e sem rolagem horizontal em 320 px de largura.
+- Tipografia fluida com máximo de no máximo 2,5 vezes o mínimo, para o zoom conseguir dobrar o texto (WCAG 1.4.4).
+- Espaçamento de texto aumentado (WCAG 1.4.12) não corta nem tira conteúdo da tela.
+- Alvos de toque com pelo menos 24 × 24 px (WCAG 2.5.8), exceto links dentro de frases.
+- Cabeçalho em uma linha de 320 px em diante; menu a partir de 960 px.
 - Respeita `prefers-reduced-motion`.
 
 ## 9. Arquitetura de arquivos
@@ -137,8 +142,8 @@ Regras de conteúdo:
 
 | Camada | Ferramenta | O que verifica |
 | --- | --- | --- |
-| Unitário | `node --test` | Validação de nome, contato, assunto e consentimento |
-| E2E | Playwright | Tarjas abrem ao rolar; sem JavaScript o texto aparece; movimento reduzido sem animação; formulário valida e não envia requisição de rede |
+| Unitário | `node --test` | Validação de nome, contato, assunto e consentimento; contraste das cores; proporção da tipografia fluida |
+| E2E | Playwright (Chromium, Firefox e WebKit no CI) | Tarjas abrem ao rolar; sem JavaScript o texto aparece; movimento reduzido sem animação; holofote pausa fora da tela; formulário valida e não envia requisição de rede; primeira tela, cabeçalho, alvos de toque, espaçamento de texto e zoom |
 | Acessibilidade | axe-core (via Playwright) | Nenhuma violação nas duas páginas |
 | HTML e links | validador de HTML e verificador de links | Marcação válida e sem links quebrados |
 | Desempenho | Lighthouse no CI | Desempenho, Acessibilidade e Boas práticas com nota de pelo menos 95 |

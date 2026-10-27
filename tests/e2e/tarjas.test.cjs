@@ -79,3 +79,32 @@ test('holofote segue o ponteiro no desktop', async () => {
   assert.match(lx, /^\d+(\.\d+)?px$/);
   await ctx.close();
 });
+
+test('toque: a luz anda sozinha e fica pausada fora da tela, mesmo depois de trocar de aba', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  const luz = () => pagina.$eval('.hero', (el) => ({
+    animacao: getComputedStyle(el, '::before').animationName,
+    pausada: el.classList.contains('holofote-pausado'),
+  }));
+  assert.equal((await luz()).animacao, 'varredura', 'no toque a luz anda por animação CSS');
+  assert.equal((await luz()).pausada, false);
+
+  await pagina.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await pagina.waitForFunction(() => document.querySelector('.hero').classList.contains('holofote-pausado'));
+
+  // Simula sair da aba e voltar com a primeira tela ainda fora da vista.
+  await pagina.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+    document.dispatchEvent(new Event('visibilitychange'));
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => false });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  assert.equal((await luz()).pausada, true, 'voltar à aba não pode religar a luz fora da tela');
+
+  await pagina.evaluate(() => window.scrollTo(0, 0));
+  await pagina.waitForFunction(() => !document.querySelector('.hero').classList.contains('holofote-pausado'));
+  await ctx.close();
+});

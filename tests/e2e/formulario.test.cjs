@@ -11,7 +11,7 @@ function vigiarRede(pagina) {
   const registro = { requisicoes: [], violacoes: [] };
   pagina.on('request', (r) => registro.requisicoes.push(r.url()));
   pagina.on('console', (m) => {
-    if (m.type() === 'error' && /Content Security Policy|Refused to/i.test(m.text())) registro.violacoes.push(m.text());
+    if (m.type() === 'error' && /Content[- ]Security[- ]Policy|Refused to/i.test(m.text())) registro.violacoes.push(m.text());
   });
   return registro;
 }
@@ -84,5 +84,15 @@ test('campo oculto (robô) não é enviado nem revela o motivo', async () => {
 test('campo oculto não recebe foco pelo teclado', async () => {
   const { ctx, pagina } = await abrir();
   assert.equal(await pagina.getAttribute('#campo-website', 'tabindex'), '-1');
+  await ctx.close();
+});
+
+test('campos com fonte de pelo menos 16 px (o iPhone dá zoom sozinho em campos menores)', async () => {
+  const { ctx, pagina } = await abrir();
+  const tamanhos = await pagina.$$eval('#contato input:not([type=checkbox]):not(#campo-website), #contato textarea', (campos) =>
+    campos.map((c) => [c.id, parseFloat(getComputedStyle(c).fontSize)]),
+  );
+  assert.ok(tamanhos.length >= 3);
+  for (const [id, px] of tamanhos) assert.ok(px >= 16, `${id}: ${px}px`);
   await ctx.close();
 });
