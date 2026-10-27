@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--espaco-5);
+  gap: var(--espaco-2); /* mínimo; o espaço visível é este + a folga do space-between */
   max-width: var(--largura);
   margin-inline: auto;
   padding: var(--espaco-3) var(--gutter);
@@ -28,11 +28,19 @@
   display: none;
   gap: var(--espaco-6);
   font-size: var(--texto-2);
+  white-space: nowrap;
 }
 
-@media (min-width: 52rem) {
+/* Marca, menu e botão só cabem lado a lado a partir de ~900 px. */
+@media (min-width: 60rem) {
   .menu {
     display: flex;
+  }
+}
+
+@media (min-width: 30rem) {
+  .topo__miolo {
+    gap: var(--espaco-5);
   }
 }
 
