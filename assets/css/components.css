@@ -48,7 +48,6 @@
   font-weight: 600;
   font-size: var(--texto-2);
   text-decoration: none;
-  white-space: nowrap; /* rótulo de botão não quebra; se faltar espaço, o teste de rolagem acusa */
   cursor: pointer;
   transition: background-color 200ms;
 }
@@ -80,14 +79,20 @@
 /* Primeira tela */
 /*
   O tamanho do título acompanha a largura da coluna (cqi = 1% dela), não a da janela.
-  "Defesa criminal" ocupa cerca de 7,5 vezes o tamanho da fonte: com 12.5cqi
-  a linha sempre cabe, e o título fica em 3 linhas no desktop.
+  Com 12cqi a coluna mede 8,3 vezes o tamanho da fonte: cabem "Defesa criminal"
+  (7,5) e "com discrição." (6,3; ou 8,1 com o espaçamento extra da WCAG 1.4.12).
   Em telas baixas (celular deitado, zoom de 200%) quem limita é a altura:
   10svh = 10% da altura visível, para o título não ocupar a tela inteira.
+  Resultado: as mesmas 3 linhas em qualquer largura, de 320 px em diante.
 */
 .hero h1 {
-  font-size: clamp(2.75rem, min(12.5cqi, 10svh), 5.25rem);
+  font-size: clamp(2rem, min(12cqi, 10svh), 5.25rem);
   font-weight: 500;
+}
+
+/* "com discrição." na mesma linha: com 12cqi a frase sempre cabe na coluna. */
+.sem-quebra {
+  white-space: nowrap;
 }
 
 .hero__apoio {
