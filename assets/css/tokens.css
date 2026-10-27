@@ -49,6 +49,7 @@
   --espaco-6: 2rem;
   --espaco-7: 3rem;
   --espaco-8: clamp(4rem, 9vw, 7.5rem);
+  --espaco-secao: clamp(3.5rem, 7vw, 6rem); /* respiro de cada seção, em cima e embaixo */
 
   /* Medidas de layout */
   --largura: 72rem;
