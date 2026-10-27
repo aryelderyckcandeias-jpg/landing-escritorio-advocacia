@@ -82,9 +82,11 @@
   O tamanho do título acompanha a largura da coluna (cqi = 1% dela), não a da janela.
   "Defesa criminal" ocupa cerca de 7,5 vezes o tamanho da fonte: com 12.5cqi
   a linha sempre cabe, e o título fica em 3 linhas no desktop.
+  Em telas baixas (celular deitado, zoom de 200%) quem limita é a altura:
+  10svh = 10% da altura visível, para o título não ocupar a tela inteira.
 */
 .hero h1 {
-  font-size: clamp(2.75rem, 12.5cqi, 5.25rem);
+  font-size: clamp(2.75rem, min(12.5cqi, 10svh), 5.25rem);
   font-weight: 500;
 }
 

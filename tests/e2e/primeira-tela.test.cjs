@@ -31,3 +31,16 @@ for (const [largura, altura] of TELAS) {
     await ctx.close();
   });
 }
+
+// Celular deitado e zoom de 200%: telas baixas. O título não pode ocupar a tela toda.
+for (const [largura, altura] of [[844, 390], [667, 375], [720, 450]]) {
+  test(`${largura}x${altura}: título ocupa no máximo metade da altura da tela`, async () => {
+    const ctx = await app.navegador.newContext({ viewport: { width: largura, height: altura } });
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + '/');
+    await pagina.evaluate(() => document.fonts.ready);
+    const alturaTitulo = await pagina.$eval('#titulo-hero', (h1) => h1.getBoundingClientRect().height);
+    assert.ok(alturaTitulo <= altura / 2, `título com ${Math.round(alturaTitulo)}px numa tela de ${altura}px`);
+    await ctx.close();
+  });
+}
