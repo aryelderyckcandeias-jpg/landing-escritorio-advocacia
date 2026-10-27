@@ -23,8 +23,11 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Copiar fontes para o projeto
-        run: npm run fonts
+      # As fontes ficam commitadas. Aqui só conferimos que batem com o pacote instalado.
+      - name: Conferir fontes commitadas
+        run: |
+          npm run fonts
+          git diff --exit-code -- assets/fonts assets/css/fonts.css
 
       - name: Instalar o Chromium do Playwright
         run: npx playwright install --with-deps chromium

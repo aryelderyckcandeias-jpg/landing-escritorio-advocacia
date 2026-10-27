@@ -18,7 +18,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run fonts
       - run: |
           mkdir _site
           cp index.html privacidade.html _site/

@@ -24,7 +24,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run fonts
       - run: npx playwright install --with-deps chromium
       - run: npm run lint:html
       - run: npm run test
@@ -37,12 +36,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run fonts
+      # Site estático com as fontes já commitadas: não precisa de Node aqui.
       - name: Montar a pasta publicada (apenas o que o site usa)
         run: |
           mkdir _site
