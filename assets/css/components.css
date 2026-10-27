@@ -96,9 +96,15 @@
 }
 
 .hero__apoio {
-  font-size: var(--texto-4);
+  font-size: var(--texto-3); /* no celular, o título é menor: o apoio acompanha */
   color: var(--papel-suave);
   max-width: 44ch;
+}
+
+@media (min-width: 30rem) {
+  .hero__apoio {
+    font-size: var(--texto-4);
+  }
 }
 
 /* Documento decorativo: folha com trechos tarjados */
@@ -264,6 +270,10 @@
 .socio__area {
   color: var(--tungstenio);
   font-size: var(--texto-2);
+}
+
+.socio__bio {
+  color: var(--papel-suave); /* igual às descrições de áreas e etapas */
 }
 
 /* Perguntas */
