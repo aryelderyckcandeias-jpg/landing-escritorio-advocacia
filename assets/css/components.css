@@ -52,10 +52,6 @@
   transition: background-color 200ms;
 }
 
-.botao:hover {
-  background: var(--tungstenio);
-}
-
 .botao--pequeno {
   padding: 0.55rem 0.75rem;
   font-size: var(--texto-1);
@@ -72,8 +68,15 @@
   text-decoration: underline;
 }
 
-.link-discreto:hover {
-  color: var(--papel);
+/* Só em quem tem mouse: no toque, o :hover fica "grudado" depois do toque. */
+@media (hover: hover) {
+  .botao:hover {
+    background: var(--tungstenio);
+  }
+
+  .link-discreto:hover {
+    color: var(--papel);
+  }
 }
 
 /* Primeira tela */
