@@ -55,6 +55,10 @@
   --medida: 62ch;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
+  /* Tarja (em "em", acompanham o tamanho de cada título) */
+  --tarja-vao: 0.06em; /* espaço entre as faixas de duas linhas */
+  --tarja-descida: 0.06em; /* faixas descem para cobrir ç, g, q */
+
   /* Movimento */
   --tempo-tarja: 900ms;
   --curva: cubic-bezier(0.7, 0, 0.2, 1);

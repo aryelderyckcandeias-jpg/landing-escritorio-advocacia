@@ -11,6 +11,7 @@
   position: relative;
   width: fit-content;
   max-width: 100%;
+  line-height: 1.15; /* folga para a tarja cobrir acentos e descendentes */
 }
 
 /*
@@ -18,17 +19,20 @@
   Ela é desenhada em faixas, uma por linha de texto (1lh = altura de uma linha),
   como num documento tarjado de verdade, e se recolhe para a direita:
   o título é revelado na ordem de leitura.
+  O vão entre as faixas fica no topo de cada linha, e o conjunto desce um pouco
+  (--tarja-descida): assim a cedilha e o "g" ficam cobertos e não sobra
+  um fio de faixa no pé do título.
 */
 .js .tarjado::after {
   content: "";
   position: absolute;
-  inset: 0 -0.08em;
+  inset: var(--tarja-descida) -0.08em calc(var(--tarja-descida) * -1);
   background: repeating-linear-gradient(
     to bottom,
-    var(--tarja) 0,
-    var(--tarja) calc(1lh - 0.14em),
-    transparent calc(1lh - 0.14em),
-    transparent 1lh
+    transparent 0,
+    transparent var(--tarja-vao),
+    var(--tarja) var(--tarja-vao),
+    var(--tarja) 1lh
   );
   transform-origin: right center;
   transform: scaleX(1);
