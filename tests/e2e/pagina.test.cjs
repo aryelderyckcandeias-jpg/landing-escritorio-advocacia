@@ -1,6 +1,6 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { iniciar } = require('./helpers.cjs');
+const { iniciar, celular } = require('./helpers.cjs');
 
 let app;
 before(async () => { app = await iniciar(); });
@@ -114,7 +114,7 @@ test('servidor de teste não expõe arquivos ocultos (.git, .github)', async () 
 // WCAG 2.5.8: alvos de toque com pelo menos 24x24 px. Links no meio de uma frase são exceção.
 for (const caminho of PAGINAS) {
   test(`${caminho}: alvos de toque com pelo menos 24x24 px no celular`, async () => {
-    const ctx = await app.navegador.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const ctx = await app.navegador.newContext({ viewport: { width: 390, height: 844 }, ...celular });
     const pagina = await ctx.newPage();
     await pagina.goto(app.base + caminho);
     const pequenos = await pagina.evaluate(() =>

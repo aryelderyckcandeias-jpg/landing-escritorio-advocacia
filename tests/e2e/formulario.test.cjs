@@ -11,7 +11,7 @@ function vigiarRede(pagina) {
   const registro = { requisicoes: [], violacoes: [] };
   pagina.on('request', (r) => registro.requisicoes.push(r.url()));
   pagina.on('console', (m) => {
-    if (m.type() === 'error' && /Content Security Policy|Refused to/i.test(m.text())) registro.violacoes.push(m.text());
+    if (m.type() === 'error' && /Content[- ]Security[- ]Policy|Refused to/i.test(m.text())) registro.violacoes.push(m.text());
   });
   return registro;
 }
