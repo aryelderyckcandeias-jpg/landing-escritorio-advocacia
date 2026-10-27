@@ -13,12 +13,21 @@ export function initSpotlight(hero) {
   const toque = window.matchMedia('(pointer: coarse)').matches;
   if (semMovimento) return;
 
-  const alternarPausa = (pausado) => hero.classList.toggle('holofote-pausado', pausado);
+  // Dois motivos independentes para pausar: um não pode desfazer o outro.
+  let abaOculta = document.hidden;
+  let foraDaTela = false;
+  const atualizarPausa = () => hero.classList.toggle('holofote-pausado', abaOculta || foraDaTela);
 
-  document.addEventListener('visibilitychange', () => alternarPausa(document.hidden));
+  document.addEventListener('visibilitychange', () => {
+    abaOculta = document.hidden;
+    atualizarPausa();
+  });
 
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entrada]) => alternarPausa(!entrada.isIntersecting)).observe(hero);
+    new IntersectionObserver(([entrada]) => {
+      foraDaTela = !entrada.isIntersecting;
+      atualizarPausa();
+    }).observe(hero);
   }
 
   if (toque) return; // a animação CSS cuida do resto
