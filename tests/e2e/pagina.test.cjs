@@ -24,8 +24,9 @@ for (const caminho of PAGINAS) {
     await ctx.close();
   });
 
-  test(`${caminho}: sem rolagem horizontal em 320 px e com zoom de 200% (640 px com escala 2)`, async () => {
-    for (const largura of [320, 360]) {
+  // 320 px equivale a zoom de 400% numa tela de 1280 px; 640 px, a zoom de 200%.
+  test(`${caminho}: sem rolagem horizontal em 320, 360 e 640 px (zoom de 400% e 200%)`, async () => {
+    for (const largura of [320, 360, 640]) {
       const ctx = await app.navegador.newContext({ viewport: { width: largura, height: 700 } });
       const pagina = await ctx.newPage();
       await pagina.goto(app.base + caminho);
