@@ -1,0 +1,162 @@
+/*
+  LAYOUT
+  Estrutura da página: cabeçalho, seções, grades, rodapé.
+  A aparência de cada componente fica em components.css.
+*/
+
+/* Cabeçalho */
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgb(28 17 19 / 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linha);
+}
+
+.topo__miolo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-5);
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding: var(--espaco-3) var(--gutter);
+}
+
+.menu {
+  display: none;
+  gap: var(--espaco-6);
+  font-size: var(--texto-2);
+}
+
+@media (min-width: 52rem) {
+  .menu {
+    display: flex;
+  }
+}
+
+/* Primeira tela */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: min(46rem, calc(100svh - 4.25rem));
+  display: flex;
+  align-items: center;
+  padding-block: var(--espaco-8);
+  isolation: isolate;
+}
+
+.hero__miolo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--espaco-7);
+  align-items: center;
+  width: 100%;
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 60rem) {
+  .hero__miolo {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr);
+    gap: var(--espaco-8);
+  }
+}
+
+.hero__texto {
+  display: grid;
+  gap: var(--espaco-6);
+  justify-items: start;
+}
+
+.hero__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-5);
+}
+
+/* Seções */
+.secao {
+  padding-block: var(--espaco-8);
+}
+
+.secao--bordo {
+  background: var(--bordo);
+}
+
+.secao__miolo,
+.secao--duas {
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.secao__miolo {
+  display: grid;
+  gap: var(--espaco-7);
+}
+
+.secao--duas {
+  display: grid;
+  gap: var(--espaco-7);
+}
+
+.secao__cabeca {
+  display: grid;
+  gap: var(--espaco-4);
+  align-content: start;
+}
+
+@media (min-width: 60rem) {
+  .secao--duas {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--espaco-8);
+  }
+
+  .secao__cabeca {
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+}
+
+/* Textos longos (política de privacidade) */
+.texto-longo {
+  display: grid;
+  gap: var(--espaco-4);
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: var(--espaco-8) var(--gutter);
+}
+
+.texto-longo h2 {
+  margin-top: var(--espaco-5);
+  font-size: var(--texto-5);
+}
+
+/* Rodapé */
+.rodape {
+  background: var(--tarja);
+  border-top: 1px solid var(--linha);
+  padding-block: var(--espaco-7);
+}
+
+.rodape__miolo {
+  display: grid;
+  gap: var(--espaco-4);
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  font-size: var(--texto-2);
+  color: var(--papel-suave);
+}
+
+.rodape__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-5);
+}

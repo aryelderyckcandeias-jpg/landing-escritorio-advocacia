@@ -1,0 +1,27 @@
+name: Lighthouse
+
+# Separado do CI de propósito: nota de desempenho oscila e não deve travar a publicação.
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npm run fonts
+      - run: |
+          mkdir _site
+          cp index.html privacidade.html _site/
+          cp -r assets _site/assets
+      - name: "Lighthouse (metas: Desempenho, Acessibilidade e Boas práticas, nota mínima 95)"
+        run: npx --yes @lhci/cli@0.14.0 autorun

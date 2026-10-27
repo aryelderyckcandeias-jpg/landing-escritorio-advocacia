@@ -1,0 +1,8 @@
+/*
+  Regras @font-face das fontes hospedadas no projeto.
+
+  Este arquivo é substituído por `npm run fonts` (veja scripts/copiar-fontes.mjs),
+  que copia Bodoni Moda e Hanken Grotesk para assets/fonts/.
+  Enquanto isso não for feito, a página usa as fontes de reserva definidas
+  em tokens.css (--fonte-titulo e --fonte-texto).
+*/

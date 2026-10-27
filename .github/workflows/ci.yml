@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # TODO(Claude Code): depois de gerar e commitar o package-lock.json, trocar por `npm ci`.
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Copiar fontes para o projeto
+        run: npm run fonts
+
+      - name: Instalar o Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Validar HTML
+        run: npm run lint:html
+
+      - name: Testes unitários
+        run: npm run test:unit
+
+      - name: Testes E2E e de acessibilidade (axe)
+        run: npm run test:e2e

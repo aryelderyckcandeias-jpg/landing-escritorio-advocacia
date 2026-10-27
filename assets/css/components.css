@@ -1,0 +1,396 @@
+/*
+  COMPONENTS
+  Aparência dos blocos: marca, botões, áreas, etapas, sócios, perguntas, formulário.
+  Efeitos de destaque (tarja e holofote) ficam em effects.css.
+*/
+
+/* Marca */
+.marca {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--espaco-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.marca__nome {
+  font-family: var(--fonte-titulo);
+  font-size: var(--texto-4);
+  letter-spacing: 0.01em;
+}
+
+.marca__tipo {
+  font-size: var(--texto-1);
+  color: var(--papel-suave);
+}
+
+@media (max-width: 26rem) {
+  .marca__tipo {
+    display: none;
+  }
+}
+
+/* Botões e links */
+.botao {
+  display: inline-block;
+  padding: 0.85rem 1.5rem;
+  background: var(--papel);
+  color: var(--mogno);
+  border: 0;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: var(--texto-2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+
+.botao:hover {
+  background: var(--tungstenio);
+}
+
+.botao--pequeno {
+  padding: 0.55rem 1rem;
+  font-size: var(--texto-1);
+}
+
+.link-discreto {
+  color: var(--papel-suave);
+  text-decoration: underline;
+}
+
+.link-discreto:hover {
+  color: var(--papel);
+}
+
+/* Primeira tela */
+.hero h1 {
+  font-size: var(--texto-7);
+  font-weight: 500;
+}
+
+.hero__apoio {
+  font-size: var(--texto-4);
+  color: var(--papel-suave);
+  max-width: 44ch;
+}
+
+/* Documento decorativo: folha com trechos tarjados */
+.documento {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .documento {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding: 2.25rem 2rem;
+    background: var(--papel);
+    transform: rotate(-2.5deg);
+    box-shadow: 0 2rem 4rem rgb(0 0 0 / 0.5);
+  }
+}
+
+.documento__titulo {
+  display: block;
+  width: 55%;
+  height: 0.8rem;
+  margin-bottom: 0.6rem;
+  background: #3a2a2d;
+}
+
+.documento__linha,
+.documento__tarja {
+  display: block;
+  height: 0.55rem;
+}
+
+.documento__linha {
+  background: #9a8f7a;
+}
+
+.documento__tarja {
+  height: 0.75rem;
+  background: var(--tarja);
+}
+
+.documento > :nth-child(2) { width: 92%; }
+.documento > :nth-child(3) { width: 78%; }
+.documento > :nth-child(4) { width: 85%; }
+.documento > :nth-child(5) { width: 96%; }
+.documento > :nth-child(6) { width: 54%; }
+.documento > :nth-child(7) { width: 88%; }
+.documento > :nth-child(8) { width: 40%; }
+.documento > :nth-child(9) { width: 82%; }
+.documento > :nth-child(10) { width: 70%; }
+
+/* Títulos de seção */
+.secao h2,
+.contato h2 {
+  font-size: var(--texto-6);
+}
+
+/* Atuação */
+.secao__cabeca p {
+  color: var(--papel-suave);
+}
+
+.areas {
+  display: grid;
+  gap: var(--espaco-7);
+}
+
+.area {
+  display: grid;
+  gap: var(--espaco-3);
+}
+
+.area h3 {
+  font-size: var(--texto-5);
+}
+
+.area p {
+  color: var(--papel-suave);
+}
+
+/* Como atuamos */
+.etapas {
+  display: grid;
+  gap: var(--espaco-7) var(--espaco-6);
+  counter-reset: etapa;
+}
+
+@media (min-width: 48rem) {
+  .etapas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 72rem) {
+  .etapas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.etapa {
+  display: grid;
+  gap: var(--espaco-3);
+  align-content: start;
+}
+
+.etapa__numero {
+  font-family: var(--fonte-titulo);
+  font-size: var(--texto-7);
+  line-height: 0.9;
+  color: var(--tungstenio);
+}
+
+.etapa h3 {
+  font-size: var(--texto-5);
+}
+
+.etapa p {
+  color: var(--papel-suave);
+}
+
+/* Sócios */
+.secao__nota {
+  color: var(--papel-suave);
+  font-size: var(--texto-2);
+  margin-top: calc(var(--espaco-5) * -1);
+}
+
+.socios {
+  display: grid;
+  gap: var(--espaco-7);
+}
+
+@media (min-width: 52rem) {
+  .socios {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espaco-8);
+  }
+}
+
+.socio {
+  display: grid;
+  gap: var(--espaco-3);
+  align-content: start;
+}
+
+.socio__monograma {
+  display: grid;
+  place-items: center;
+  width: 7rem;
+  aspect-ratio: 1;
+  margin-bottom: var(--espaco-3);
+  background: var(--bordo);
+  font-family: var(--fonte-titulo);
+  font-size: var(--texto-6);
+  color: var(--tungstenio);
+}
+
+.socio h3 {
+  font-size: var(--texto-5);
+}
+
+.socio__area {
+  color: var(--tungstenio);
+  font-size: var(--texto-2);
+}
+
+/* Perguntas */
+.faq {
+  display: grid;
+}
+
+.faq details {
+  border-bottom: 1px solid var(--linha);
+}
+
+.faq details:first-child {
+  border-top: 1px solid var(--linha);
+}
+
+.faq summary {
+  padding-block: var(--espaco-5);
+  font-family: var(--fonte-titulo);
+  font-size: var(--texto-4);
+  cursor: pointer;
+  list-style-position: outside;
+}
+
+.faq summary::marker {
+  color: var(--tungstenio);
+}
+
+.faq details p {
+  padding-bottom: var(--espaco-5);
+  color: var(--papel-suave);
+}
+
+/* Contato */
+.contato {
+  gap: var(--espaco-7);
+}
+
+@media (min-width: 60rem) {
+  .contato {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--espaco-8);
+    align-items: start;
+  }
+}
+
+.contato__texto {
+  display: grid;
+  gap: var(--espaco-4);
+  align-content: start;
+}
+
+.aviso {
+  padding-left: var(--espaco-4);
+  border-left: 2px solid var(--tungstenio);
+  font-size: var(--texto-2);
+}
+
+.formulario {
+  display: grid;
+  gap: var(--espaco-5);
+  justify-items: start;
+}
+
+.campo {
+  display: grid;
+  gap: var(--espaco-2);
+  width: 100%;
+}
+
+.campo label {
+  font-size: var(--texto-2);
+  font-weight: 600;
+}
+
+.campo input[type="text"],
+.campo textarea {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  background: var(--mogno);
+  border: 1px solid var(--papel-suave);
+  border-radius: 0;
+  color: var(--papel);
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo [aria-invalid="true"] {
+  border-color: #ff9d8f;
+  border-width: 2px;
+}
+
+.dica {
+  font-size: var(--texto-1);
+  color: var(--papel-suave);
+}
+
+.erro {
+  font-size: var(--texto-2);
+  color: #ffb4a8; /* contraste alto sobre bordo; o erro também é dito em texto */
+  font-weight: 600;
+}
+
+.campo--marca {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: var(--espaco-3);
+}
+
+.campo--marca input {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.2rem 0 0;
+  accent-color: var(--tungstenio);
+}
+
+.campo--marca label {
+  font-weight: 400;
+}
+
+.campo--marca .erro {
+  grid-column: 1 / -1;
+}
+
+.status {
+  min-height: 1.5em;
+  color: var(--tungstenio);
+  font-size: var(--texto-2);
+}
+
+/* Campo anti-robô: fora da tela, não é "display: none" de propósito */
+.isca {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Política de privacidade */
+.texto-longo__nota {
+  color: var(--tungstenio);
+}
+
+.texto-longo .lista {
+  display: grid;
+  gap: var(--espaco-3);
+  padding-left: var(--espaco-5);
+  list-style: disc;
+  max-width: var(--medida);
+}
+
+.texto-longo h1 {
+  font-size: var(--texto-6);
+}

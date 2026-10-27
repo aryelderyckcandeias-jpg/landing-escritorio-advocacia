@@ -1,0 +1,3 @@
+# Normaliza finais de linha (LF) e marca fontes como binárias.
+* text=auto eol=lf
+*.woff2 binary

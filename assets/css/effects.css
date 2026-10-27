@@ -1,0 +1,89 @@
+/*
+  EFFECTS
+  Os dois únicos efeitos de destaque da página: tarjas e holofote.
+  Regra de ouro: nenhum efeito pode esconder texto de quem não vê a animação
+  (sem JavaScript, movimento reduzido ou falha de script).
+*/
+
+/* ---------- Tarjas ---------- */
+
+.tarjado {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/*
+  A cobertura só existe quando o JavaScript marcou a página (html.js).
+  Ela é desenhada em faixas, uma por linha de texto (1lh = altura de uma linha),
+  como num documento tarjado de verdade, e se recolhe para a direita:
+  o título é revelado na ordem de leitura.
+*/
+.js .tarjado::after {
+  content: "";
+  position: absolute;
+  inset: 0 -0.08em;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--tarja) 0,
+    var(--tarja) calc(1lh - 0.14em),
+    transparent calc(1lh - 0.14em),
+    transparent 1lh
+  );
+  transform-origin: right center;
+  transform: scaleX(1);
+  transition: transform var(--tempo-tarja) var(--curva);
+  pointer-events: none;
+}
+
+.js .tarjado.aberto::after {
+  transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .tarjado::after {
+    display: none;
+  }
+}
+
+/* ---------- Holofote ---------- */
+
+.hero[data-holofote]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 34rem at var(--lx) var(--ly),
+    rgb(240 217 168 / 0.2),
+    rgb(240 217 168 / 0.07) 45%,
+    transparent 70%
+  );
+}
+
+/* Telas de toque: a luz percorre a tela sozinha. */
+@media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  .hero[data-holofote]::before {
+    animation: varredura 14s ease-in-out infinite alternate;
+  }
+
+  .hero.holofote-pausado[data-holofote]::before {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes varredura {
+  0% {
+    --lx: 15%;
+    --ly: 25%;
+  }
+  50% {
+    --lx: 80%;
+    --ly: 70%;
+  }
+  100% {
+    --lx: 35%;
+    --ly: 85%;
+  }
+}

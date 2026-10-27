@@ -1,0 +1,61 @@
+/*
+  TOKENS
+  Valores reutilizáveis do design: cores, fontes, escalas e tempos.
+  Só variáveis aqui. Nada de seletores de componentes.
+*/
+
+/* Posição da luz do holofote. Registradas para poderem ser animadas no toque. */
+@property --lx {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 70%;
+}
+
+@property --ly {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 30%;
+}
+
+:root {
+  /* Cores */
+  --mogno: #1c1113;
+  --bordo: #4a1620;
+  --papel: #e8dfcc;
+  --tungstenio: #f0d9a8;
+  --tarja: #070405;
+  --papel-suave: #bfb49e; /* texto secundário (derivado de --papel) */
+  --linha: rgb(232 223 204 / 0.2); /* filtros e divisórias discretas */
+
+  /* Fontes: a fonte hospedada vem primeiro, depois as de reserva */
+  --fonte-titulo: "Bodoni Moda", "Bodoni 72", Didot, "Times New Roman", serif;
+  --fonte-texto: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Escala tipográfica */
+  --texto-1: 0.8125rem;
+  --texto-2: 0.9375rem;
+  --texto-3: 1.0625rem;
+  --texto-4: 1.25rem;
+  --texto-5: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+  --texto-6: clamp(2rem, 1.4rem + 2.8vw, 3.25rem);
+  --texto-7: clamp(2.75rem, 1.4rem + 6.4vw, 6.25rem);
+
+  /* Espaçamentos */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-5: 1.5rem;
+  --espaco-6: 2rem;
+  --espaco-7: 3rem;
+  --espaco-8: clamp(4rem, 9vw, 7.5rem);
+
+  /* Medidas de layout */
+  --largura: 72rem;
+  --medida: 62ch;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Movimento */
+  --tempo-tarja: 900ms;
+  --curva: cubic-bezier(0.7, 0, 0.2, 1);
+}
