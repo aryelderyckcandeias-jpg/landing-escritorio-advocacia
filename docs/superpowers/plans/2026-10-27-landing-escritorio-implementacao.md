@@ -158,3 +158,18 @@ O ambiente de construção da v1 não tinha acesso ao registro do npm (HTTP 403)
 
 Verificações extras feitas: teste de mutação (tarja que não abre, tarja que fecha de novo e
 formulário que envia dados foram detectados pelos testes) e capturas de tela em 1440 px e 390 px.
+
+### Finalização (depois da v1)
+
+As pendências da tabela acima foram resolvidas:
+
+- `package-lock.json` gerado e `npm ci` nos workflows.
+- `npm run fonts` executado sem ajustes; fontes e licenças commitadas. O CI confere se batem
+  com o pacote.
+- axe, html-validate e Lighthouse executados. O html-validate tinha uma opção com nome errado
+  (`allowMultiple` → `allowMultipleH1`) e pedia `DOCTYPE` em maiúsculas.
+- Com as fontes reais e capturas em 18 tamanhos de tela, foram corrigidos: título em 5 linhas
+  no desktop, cedilha e descendentes vazando da tarja, cabeçalho quebrando em 2 linhas,
+  título enorme em celular deitado, caixa de consentimento pequena, conteúdo cortado com
+  espaçamento de texto aumentado, título que não crescia com o zoom e holofote que voltava a
+  andar fora da tela ao trocar de aba. Cada correção tem teste.

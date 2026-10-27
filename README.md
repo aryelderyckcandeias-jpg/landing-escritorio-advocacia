@@ -24,19 +24,24 @@ tudo fica legível.
 Requisitos: Node.js 20 ou superior.
 
 ```bash
-npm install          # instala as dependências de desenvolvimento
-npm run fonts        # copia as fontes para assets/fonts (uma vez, e commite o resultado)
+npm ci               # instala as dependências nas versões do package-lock.json
 npm run serve        # abre em http://127.0.0.1:4173
 ```
+
+As fontes já estão commitadas em `assets/fonts/`. `npm run fonts` só é necessário se o pacote
+das fontes for atualizado (o CI confere se os arquivos batem com o pacote).
 
 Testes:
 
 ```bash
 npx playwright install chromium   # uma vez, para os testes E2E
-npm run test:unit                 # validação do formulário e contraste das cores
-npm run test:e2e                  # tarjas, formulário, rede, acessibilidade (inclui axe)
+npm run test:unit                 # validação do formulário, contraste das cores, tipografia e zoom
+npm run test:e2e                  # tarjas, holofote, formulário, rede, responsividade, axe
 npm run lint:html                 # validador de HTML
+NAVEGADOR=firefox npm run test:e2e   # o mesmo no Firefox (ou NAVEGADOR=webkit, motor do Safari)
 ```
+
+O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer branch.
 
 ## Decisões
 
@@ -49,6 +54,11 @@ npm run lint:html                 # validador de HTML
 | `marca-js.js` com prazo de 3 s | Se `main.js` falhar, a marca `js` é removida e nenhum título fica coberto. |
 | `noindex` | O escritório é fictício e não deve ser indexado como se fosse real. |
 | Testes unitários sem dependências (`node:test`) | Funções de validação são puras e rápidas de testar. |
+| Título da primeira tela medido pela coluna (`cqi`) | Fica nas mesmas 3 linhas de 320 a 1920 px; em celular deitado também respeita a altura (`svh`). |
+| Tipografia fluida com máximo ≤ 2,5 × mínimo | Condição para o zoom do navegador conseguir dobrar o texto (WCAG 1.4.4); há teste unitário. |
+| Vão da tarja no topo de cada linha | A faixa cobre acentos e descendentes (ç, g, q); medido com capturas da tarja fechada. |
+| Triângulo das perguntas desenhado pelo CSS | O marcador nativo do `<summary>` muda de navegador para navegador (Safari). |
+| Hover só em `(hover: hover)` | No toque, o hover ficaria ativo depois do toque. |
 
 ## Segurança e LGPD
 
@@ -75,6 +85,13 @@ npm run lint:html                 # validador de HTML
 - A página usa `1lh` (unidade de altura de linha) nas tarjas, presente em navegadores atuais
   (Chrome 109+, Safari 16.4+, Firefox 120+). Em navegadores mais antigos as faixas por linha
   não aparecem, mas o texto continua legível.
+- O título usa `cqi` (Chrome 105+, Safari 16+, Firefox 110+). Sem suporte, vale o tamanho
+  de reserva (`--texto-6`).
+- Com zoom de exatamente 200%, os títulos de seção crescem de 1,55 a 1,9 vez, não 2 vezes
+  (o tamanho fluido acompanha a janela, que encolhe com o zoom). Eles chegam ao dobro com um
+  pouco mais de zoom; o texto corrido dobra normalmente.
+- Os testes de celular são feitos em navegador emulado; o Safari é testado pelo WebKit do
+  Playwright, que usa o mesmo motor, mas não é o Safari do iPhone.
 - Auditoria de SEO do Lighthouse fica fora das metas por causa do `noindex`.
 
 ## Estrutura
@@ -84,9 +101,9 @@ index.html, privacidade.html
 assets/css/   fonts, tokens, base, layout, components, effects
 assets/js/    marca-js, main, reveal, spotlight, form, form-validation
 assets/fonts/ fontes woff2 (geradas por npm run fonts)
-tests/unit/   form-validation, contraste
-tests/e2e/    tarjas, formulário, página, axe
-scripts/      serve.cjs (servidor estático), copiar-fontes.mjs
+tests/unit/   form-validation, contraste, tipografia
+tests/e2e/    tarjas, formulário, página, primeira-tela, cabeçalho, espaçamento, axe
+scripts/      serve.cjs (servidor estático), copiar-fontes.mjs, resumo-falhas.sh (CI)
 docs/superpowers/  especificação e plano de implementação
 ```
 
