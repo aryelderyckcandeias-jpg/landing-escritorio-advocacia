@@ -19,9 +19,9 @@ jobs:
           node-version: 22
           cache: npm
 
-      # TODO(Claude Code): depois de gerar e commitar o package-lock.json, trocar por `npm ci`.
+      # npm ci instala exatamente as versões do package-lock.json (build reproduzível).
       - name: Instalar dependências
-        run: npm install
+        run: npm ci
 
       - name: Copiar fontes para o projeto
         run: npm run fonts

@@ -23,8 +23,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      # TODO(Claude Code): trocar por `npm ci` quando o package-lock.json existir.
-      - run: npm install
+      - run: npm ci
       - run: npm run fonts
       - run: npx playwright install --with-deps chromium
       - run: npm run lint:html
@@ -42,7 +41,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm install
+      - run: npm ci
       - run: npm run fonts
       - name: Montar a pasta publicada (apenas o que o site usa)
         run: |
