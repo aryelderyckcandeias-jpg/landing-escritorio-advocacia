@@ -108,3 +108,31 @@ test('toque: a luz anda sozinha e fica pausada fora da tela, mesmo depois de tro
   await pagina.waitForFunction(() => !document.querySelector('.hero').classList.contains('holofote-pausado'));
   await ctx.close();
 });
+
+test('holofote: depois que o cursor para, a luz chega até ele', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  await pagina.mouse.move(300, 200);
+  await pagina.mouse.move(500, 400, { steps: 4 });
+  await pagina.waitForTimeout(1500);
+  const { lx, ly, esquerda, topo } = await pagina.$eval('.hero', (el) => {
+    const caixa = el.getBoundingClientRect();
+    return { lx: parseFloat(el.style.getPropertyValue('--lx')), ly: parseFloat(el.style.getPropertyValue('--ly')), esquerda: caixa.left, topo: caixa.top };
+  });
+  assert.ok(Math.abs(lx - (500 - esquerda)) <= 2, `luz em x=${lx}, cursor em ${500 - esquerda}`);
+  assert.ok(Math.abs(ly - (400 - topo)) <= 2, `luz em y=${ly}, cursor em ${400 - topo}`);
+  await ctx.close();
+});
+
+test('holofote: com movimento reduzido a luz não segue o cursor', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  await pagina.mouse.move(500, 400, { steps: 4 });
+  await pagina.waitForTimeout(500);
+  assert.equal(await pagina.$eval('.hero', (el) => el.style.getPropertyValue('--lx')), '');
+  await ctx.close();
+});
