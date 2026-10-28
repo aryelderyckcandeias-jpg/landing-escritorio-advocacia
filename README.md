@@ -90,8 +90,9 @@ O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer br
 - Com zoom de exatamente 200%, os títulos de seção crescem de 1,55 a 1,9 vez, não 2 vezes
   (o tamanho fluido acompanha a janela, que encolhe com o zoom). Eles chegam ao dobro com um
   pouco mais de zoom; o texto corrido dobra normalmente.
-- Os testes de celular são feitos em navegador emulado; o Safari é testado pelo WebKit do
-  Playwright, que usa o mesmo motor, mas não é o Safari do iPhone.
+- Os testes automáticos de celular usam navegador emulado e o WebKit do Playwright (o motor do
+  Safari, mas não o Safari do iPhone). Em 28/10/2026 a página publicada também foi conferida à
+  mão num Android e num iPhone.
 - Auditoria de SEO do Lighthouse fica fora das metas por causa do `noindex`.
 
 ## Estrutura
