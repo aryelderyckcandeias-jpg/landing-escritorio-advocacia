@@ -6,9 +6,11 @@
 import { initReveal } from './reveal.js';
 import { initSpotlight } from './spotlight.js';
 import { initForm } from './form.js';
+import { initMenu } from './menu.js';
 
 initReveal();
 initSpotlight(document.querySelector('[data-holofote]'));
 initForm(document.getElementById('contato'));
+initMenu(document.querySelector('.menu-movel'));
 
 document.documentElement.classList.add('js-pronto');

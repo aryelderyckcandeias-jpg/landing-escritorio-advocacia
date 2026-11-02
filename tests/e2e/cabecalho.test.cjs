@@ -23,7 +23,7 @@ for (const caminho of ['/', '/privacidade.html']) {
           faixa.selectNodeContents(el);
           return new Set([...faixa.getClientRects()].map((r) => Math.round(r.top))).size;
         };
-        const itens = document.querySelectorAll('.topo .marca__nome, .topo .marca__tipo, .topo .menu a, .topo .botao');
+        const itens = document.querySelectorAll('.topo .marca__nome, .topo .marca__tipo, .topo .menu a, .topo .topo__contato, .topo .menu-movel summary');
         return [...itens]
           .filter((el) => getComputedStyle(el).display !== 'none' && getComputedStyle(el.parentElement).display !== 'none')
           .filter((el) => linhas(el) > 1)

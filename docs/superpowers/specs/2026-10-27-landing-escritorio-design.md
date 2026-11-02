@@ -114,7 +114,7 @@ Regras de conteúdo:
 - Tipografia fluida com máximo de no máximo 2,5 vezes o mínimo, para o zoom conseguir dobrar o texto (WCAG 1.4.4).
 - Espaçamento de texto aumentado (WCAG 1.4.12) não corta nem tira conteúdo da tela.
 - Alvos de toque com pelo menos 24 × 24 px (WCAG 2.5.8), exceto links dentro de frases.
-- Cabeçalho em uma linha de 320 px em diante; menu a partir de 960 px.
+- Cabeçalho em uma linha de 320 px em diante; menu completo a partir de 960 px. Abaixo disso, um botão "Menu" (`<details>`, funciona sem JavaScript) abre as seções; abaixo de 600 px o "Contato sigiloso" fica dentro dele. Com JavaScript, o menu fecha ao escolher um link, com Esc e ao tocar fora.
 - Respeita `prefers-reduced-motion`.
 
 ## 9. Arquitetura de arquivos
