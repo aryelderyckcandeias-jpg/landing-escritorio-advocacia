@@ -1,47 +1,64 @@
 # Landing page: escritório de advocacia criminal (fictício)
 
-Projeto de portfólio: landing page de um escritório boutique de defesa criminal, com
-efeitos visuais, acessibilidade, segurança, LGPD e testes automatizados.
+[![CI](https://github.com/aryelderyckcandeias-jpg/landing-escritorio-advocacia/actions/workflows/ci.yml/badge.svg)](https://github.com/aryelderyckcandeias-jpg/landing-escritorio-advocacia/actions/workflows/ci.yml)
+
+**Página publicada:** https://aryelderyckcandeias-jpg.github.io/landing-escritorio-advocacia/
+
+Projeto de portfólio: landing page de um escritório boutique de defesa criminal, com dois efeitos
+visuais, acessibilidade, segurança, LGPD e testes automatizados em três navegadores. HTML, CSS e
+JavaScript puros, sem framework e sem etapa de build.
 
 > **Tudo aqui é fictício.** O escritório "Vasconcelos Torres Advogados", os sócios e os textos
 > foram inventados. O formulário de contato é uma demonstração e **não envia nada**.
+
+![A tarja do título se abre ao carregar e a luz da primeira tela segue o cursor](docs/imagens/efeitos.gif)
+
+![Primeira tela no desktop](docs/imagens/desktop.jpg)
+
+![No celular: primeira tela, menu aberto, seção Sigilo e formulário](docs/imagens/celular.jpg)
 
 ## O conceito
 
 A página é um processo em segredo de justiça aberto sob uma lâmpada de mesa.
 
 - **Tarjas:** os títulos começam cobertos por tarjas, como num documento sigiloso, e se abrem
-  uma única vez, quando entram na tela.
-- **Holofote:** na primeira tela, uma luz quente segue o cursor. No celular, a luz percorre a
-  tela sozinha.
+  uma única vez, quando passam da linha de 75% da altura da tela (onde a pessoa está olhando).
+- **Holofote:** na primeira tela, uma luz quente segue o cursor, com uma leve inércia. No
+  celular, a luz percorre a tela sozinha e pausa quando a primeira tela sai da vista.
 - Só esses dois efeitos existem. O resto da página é sóbrio de propósito.
 
 Os efeitos nunca escondem texto: sem JavaScript, com movimento reduzido ou se o script falhar,
 tudo fica legível.
 
-## Como rodar
+## Como foi feito
 
-Requisitos: Node.js 20 ou superior.
+A primeira versão foi escrita de uma vez. A segunda fase foi **verificar com ferramentas e
+corrigir o que elas mostraram**, sempre com um teste que falhava antes da correção. Alguns
+exemplos do que só apareceu medindo:
 
-```bash
-npm ci               # instala as dependências nas versões do package-lock.json
-npm run serve        # abre em http://127.0.0.1:4173
-```
+| Problema encontrado | Como foi medido | Resultado |
+| --- | --- | --- |
+| Título da primeira tela em 5 linhas no notebook, empurrando o botão para fora da tela | Largura das palavras × largura da coluna, em 5 tamanhos de tela | Título medido pela coluna (`cqi`): 3 linhas de 320 a 1920 px |
+| Cedilha e "g" aparecendo por baixo da tarja fechada | Capturas da tarja fechada e contagem de pixels claros | 1.856 pixels vazados → 0, em 4 larguras |
+| Botão do cabeçalho quebrando em 2 ou 3 linhas em 320, 360 e 430 px | Teste que conta as linhas de cada item do cabeçalho | Uma linha em 13 larguras |
+| Título que não crescia com o zoom do navegador | Tamanho na tela com zoom de 200% | 1,0× → 1,8 a 2,0× |
+| Conteúdo cortado com espaçamento de texto aumentado (WCAG 1.4.12) | Teste que aplica o espaçamento e procura o que sai da tela | Nada sai da tela em 6 larguras |
+| Luz do holofote voltando a andar fora da tela ao trocar de aba | Teste em tela de toque simulando a troca de aba | Pausa mantida |
+| Firefox lendo vazio o `autocomplete` definido pela propriedade JavaScript | CI rodando os testes no Firefox | Passou a usar o atributo; passa nos 3 navegadores |
 
-As fontes já estão commitadas em `assets/fonts/`. `npm run fonts` só é necessário se o pacote
-das fontes for atualizado (o CI confere se os arquivos batem com o pacote).
+O processo completo está nos documentos de projeto: [especificação](docs/superpowers/specs/2026-10-27-landing-escritorio-design.md)
+e [plano](docs/superpowers/plans/2026-10-27-landing-escritorio-implementacao.md).
 
-Testes:
+## Qualidade verificada por ferramenta
 
-```bash
-npx playwright install chromium   # uma vez, para os testes E2E
-npm run test:unit                 # validação do formulário, contraste das cores, tipografia e zoom
-npm run test:e2e                  # tarjas, holofote, formulário, rede, responsividade, axe
-npm run lint:html                 # validador de HTML
-NAVEGADOR=firefox npm run test:e2e   # o mesmo no Firefox (ou NAVEGADOR=webkit, motor do Safari)
-```
-
-O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer branch.
+| O quê | Ferramenta | Resultado |
+| --- | --- | --- |
+| Testes unitários | `node:test` | 38 testes: validação do formulário, contraste das cores (inclusive sob a luz do holofote), tipografia e zoom, publicação |
+| Testes E2E | Playwright | 60 testes, no **Chromium, Firefox e WebKit** (motor do Safari), a cada push |
+| Acessibilidade | axe-core | 0 violações nas 3 páginas |
+| HTML | html-validate | 0 erros nas 3 páginas |
+| Desempenho e boas práticas | Lighthouse (celular, rede lenta simulada) | Inicial: Desempenho 99, Acessibilidade 100, Boas práticas 100. Privacidade: 100, 100, 100 |
+| Aparelhos reais | Teste manual | Versão de 28/10/2026 conferida num Android e num iPhone; os refinamentos de 02/11 (menu, Sigilo, formulário, 404) ainda não |
 
 ## Decisões
 
@@ -52,13 +69,31 @@ O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer br
 | `Content-Security-Policy` por `<meta>` | O GitHub Pages não deixa configurar cabeçalhos HTTP. |
 | Tarjas só existem com `html.js` | Melhoria progressiva: sem JavaScript, o texto aparece normalmente. |
 | `marca-js.js` com prazo de 3 s | Se `main.js` falhar, a marca `js` é removida e nenhum título fica coberto. |
+| Tarja abre com limiar 0 e `rootMargin` de -25% | Abre onde a pessoa olha; com limiar 0, até um título mais alto que a tela (zoom grande) abre. |
 | `noindex` | O escritório é fictício e não deve ser indexado como se fosse real. |
 | Testes unitários sem dependências (`node:test`) | Funções de validação são puras e rápidas de testar. |
 | Título da primeira tela medido pela coluna (`cqi`) | Fica nas mesmas 3 linhas de 320 a 1920 px; em celular deitado também respeita a altura (`svh`). |
 | Tipografia fluida com máximo ≤ 2,5 × mínimo | Condição para o zoom do navegador conseguir dobrar o texto (WCAG 1.4.4); há teste unitário. |
 | Vão da tarja no topo de cada linha | A faixa cobre acentos e descendentes (ç, g, q); medido com capturas da tarja fechada. |
+| Ajustes do holofote em variáveis (`--holofote-*`) | Dá para experimentar; um teste barra uma força de luz que derrube o contraste do texto. |
+| Menu do celular com `<details>` | Funciona sem JavaScript; o script só fecha o menu ao escolher um link, com Esc ou ao tocar fora. |
+| Perguntas com `<details name>` | Abrir uma fecha a outra sem JavaScript. |
 | Triângulo das perguntas desenhado pelo CSS | O marcador nativo do `<summary>` muda de navegador para navegador (Safari). |
 | Hover só em `(hover: hover)` | No toque, o hover ficaria ativo depois do toque. |
+| `404.html` com `<base>` | O Pages mostra a 404 em qualquer profundidade de endereço; sem o `<base>`, os estilos quebram. |
+| Prévia de compartilhamento (Open Graph) com endereço completo | É o que o WhatsApp e o LinkedIn leem; única exceção aos caminhos relativos, além do `<base>`. |
+
+## Acessibilidade
+
+- HTML semântico, `lang="pt-BR"`, link para pular ao conteúdo e foco visível.
+- Formulário com rótulos, erros em texto ligados aos campos e anunciados por `aria-live`.
+- Sem rolagem horizontal de 320 px em diante, com zoom de 200% e de 400% (WCAG 1.4.10).
+- Texto ampliável com o zoom do navegador (WCAG 1.4.4) e espaçamento de texto aumentado sem
+  perda de conteúdo (WCAG 1.4.12).
+- Alvos de toque com pelo menos 24 × 24 px (WCAG 2.5.8).
+- Contraste mínimo de 4,5:1, verificado por teste, inclusive no ponto mais claro da luz.
+- `prefers-reduced-motion`: sem tarja, sem animação, luz parada.
+- Modo de alto contraste do Windows (`forced-colors`) considerado no triângulo das perguntas.
 
 ## Segurança e LGPD
 
@@ -78,6 +113,32 @@ O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer br
 5. Canal para o titular exercer seus direitos (LGPD, art. 18).
 6. Aviso para não enviar detalhes do caso pelo formulário (já presente aqui).
 
+## Como rodar
+
+Requisitos: Node.js 20 ou superior.
+
+```bash
+npm ci                 # instala as dependências nas versões do package-lock.json
+npm run serve          # abre em http://127.0.0.1:4173
+npm run serve:pages    # imita o GitHub Pages: /landing-escritorio-advocacia/ e a página 404
+```
+
+As fontes já estão commitadas em `assets/fonts/`. `npm run fonts` só é necessário se o pacote
+das fontes for atualizado (o CI confere se os arquivos batem com o pacote).
+
+Testes:
+
+```bash
+npx playwright install chromium   # uma vez, para os testes E2E
+npm run test:unit                 # formulário, contraste, tipografia e zoom, publicação
+npm run test:e2e                  # efeitos, formulário, menu, rede, responsividade, 404, axe
+npm run lint:html                 # validador de HTML
+```
+
+Para rodar os E2E em outro navegador, instale-o (`npx playwright install firefox` ou `webkit`) e
+defina a variável `NAVEGADOR`: `NAVEGADOR=firefox npm run test:e2e` no Linux e no macOS, ou
+`$env:NAVEGADOR="firefox"; npm run test:e2e` no PowerShell do Windows.
+
 ## Limitações conhecidas
 
 - **CSP por `<meta>`** não suporta `frame-ancestors` e outras diretivas; cabeçalhos HTTP reais
@@ -92,26 +153,28 @@ O CI roda os E2E no Chromium, no Firefox e no WebKit a cada push, em qualquer br
   pouco mais de zoom; o texto corrido dobra normalmente.
 - Os testes automáticos de celular usam navegador emulado e o WebKit do Playwright (o motor do
   Safari, mas não o Safari do iPhone). Em 28/10/2026 a página publicada também foi conferida à
-  mão num Android e num iPhone.
+  mão num Android e num iPhone; os refinamentos de 02/11/2026 ainda precisam dessa conferência.
+- O Lighthouse roda no CI só em pull requests (a nota de desempenho oscila e não deve travar a
+  publicação); os números acima são de execuções locais.
 - Auditoria de SEO do Lighthouse fica fora das metas por causa do `noindex`.
 
 ## Estrutura
 
 ```text
-index.html, privacidade.html
-assets/css/   fonts, tokens, base, layout, components, effects
-assets/js/    marca-js, main, reveal, spotlight, form, form-validation
-assets/fonts/ fontes woff2 (geradas por npm run fonts)
-tests/unit/   form-validation, contraste, tipografia
-tests/e2e/    tarjas, formulário, página, primeira-tela, cabeçalho, espaçamento, axe
-scripts/      serve.cjs (servidor estático), copiar-fontes.mjs, resumo-falhas.sh (CI)
-docs/superpowers/  especificação e plano de implementação
+index.html, privacidade.html, 404.html
+assets/css/     fonts, tokens, base, layout, components, effects
+assets/js/      marca-js, main, reveal, spotlight, menu, form, form-validation
+assets/fonts/   fontes woff2 e licenças
+assets/         favicon, ícone da tela inicial, imagem da prévia
+tests/unit/     form-validation, contraste, tipografia, publicação
+tests/e2e/      tarjas, formulário, menu, página, primeira-tela, cabeçalho, espaçamento,
+                github-pages, axe
+scripts/        serve.cjs (servidor estático), copiar-fontes.mjs, resumo-falhas.sh (CI)
+docs/           imagens do README, especificação e plano
 ```
-
-Documentos de projeto: [especificação](docs/superpowers/specs/2026-10-27-landing-escritorio-design.md)
-e [plano](docs/superpowers/plans/2026-10-27-landing-escritorio-implementacao.md).
 
 ## Publicação
 
-GitHub Pages por Actions (`pages.yml`), só depois de os testes passarem. Passo único e manual:
-*Settings → Pages → Source: GitHub Actions*.
+GitHub Pages por Actions (`pages.yml`): a cada push na `main`, os testes rodam e, só se passarem,
+a página é publicada. O mesmo `ci.yml` roda em qualquer branch, nos três navegadores, e resume
+as falhas numa anotação da execução.

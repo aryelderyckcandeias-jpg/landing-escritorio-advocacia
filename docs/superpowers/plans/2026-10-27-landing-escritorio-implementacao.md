@@ -173,3 +173,11 @@ As pendências da tabela acima foram resolvidas:
   título enorme em celular deitado, caixa de consentimento pequena, conteúdo cortado com
   espaçamento de texto aumentado, título que não crescia com o zoom e holofote que voltava a
   andar fora da tela ao trocar de aba. Cada correção tem teste.
+
+### Refinamentos (02/11/2026)
+
+Escolhas do responsável: tarja com 900 ms e abertura na linha de 75% da tela; inércia de 0,18
+no holofote. Itens feitos, cada um com teste antes e a suíte completa depois: menu do celular
+(`<details>`), perguntas exclusivas, seção Sigilo, escolha de e-mail ou telefone no formulário,
+página 404 com `<base>` e ícone da tela inicial, prévia Open Graph e README como estudo de caso.
+O CI nos três navegadores encontrou uma diferença do Firefox (leitura de `autocomplete`), corrigida.
