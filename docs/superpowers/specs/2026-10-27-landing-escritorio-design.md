@@ -71,7 +71,7 @@ Regras de conteúdo:
 ### Tarjas
 
 - Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`. A cobertura é desenhada em faixas, uma por linha; o vão entre elas fica no topo de cada linha para a faixa cobrir acentos e descendentes (ç, g, q). Títulos tarjados usam altura de linha 1,15.
-- Um `IntersectionObserver` adiciona a classe de abertura quando cerca de 40% do título está visível, e para de observar em seguida (acontece uma vez só).
+- Um `IntersectionObserver` adiciona a classe de abertura quando qualquer parte do título passa da linha a 75% da altura da tela (`rootMargin` de -25% embaixo, limiar 0), e para de observar em seguida (acontece uma vez só). Assim a tarja abre onde a pessoa está olhando, e o limiar 0 garante que até um título mais alto que a área abra. Duração de 900 ms (`--tempo-tarja`).
 - **Melhoria progressiva:** a cobertura só existe se a página marcar `html.js`. Sem JavaScript, o texto aparece normalmente.
 - Com `prefers-reduced-motion: reduce`, não há tarja nem animação: o texto aparece direto.
 - O texto está sempre no HTML e acessível a leitores de tela. A tarja é só uma camada visual.
