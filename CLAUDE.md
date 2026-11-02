@@ -14,6 +14,7 @@ português, de forma direta. Quando houver escolha de aprendizado, guie em vez d
 - **Nenhum recurso de terceiros** (CDN, Google Fonts, analytics, cookies). O CSP é
   `default-src 'self'`: sem `<script>` inline e sem atributos `style=""` (use classes).
 - Caminhos **relativos** em todo o projeto (o Pages publica em `/landing-escritorio-advocacia/`).
+  Exceção: o `<base>` da `404.html`, que o Pages mostra em qualquer profundidade de endereço.
 - Efeitos: só tarjas (A) e holofote na primeira tela (B). Não adicionar outros.
 - **A luz e a tarja nunca podem esconder texto** sem JavaScript, com `prefers-reduced-motion`
   ou se o script falhar (veja `marca-js.js`).
@@ -23,6 +24,8 @@ português, de forma direta. Quando houver escolha de aprendizado, guie em vez d
 
 ## Comandos
 - `npm run serve` (127.0.0.1:4173), `npm run test:unit`, `npm run test:e2e`, `npm run lint:html`.
+- `npm run serve:pages` imita o GitHub Pages (prefixo `/landing-escritorio-advocacia/` e `404.html`).
+- `NAVEGADOR=firefox` ou `NAVEGADOR=webkit` antes de `npm run test:e2e` troca o navegador.
 - Os E2E usam `playwright` + `node:test` em arquivos `.cjs`; `axe.test.cjs` é pulado se
   `@axe-core/playwright` não estiver instalado.
 

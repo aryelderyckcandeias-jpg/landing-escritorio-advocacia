@@ -252,6 +252,17 @@
   font-size: var(--texto-5);
 }
 
+/* Página de pouco conteúdo (404): o rodapé fica no pé da tela, não no meio. */
+.pagina-curta {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.pagina-curta main {
+  flex: 1;
+}
+
 /* Rodapé */
 .rodape {
   background: var(--tarja);

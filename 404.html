@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1c1113">
+  <!--
+    O GitHub Pages mostra esta página em qualquer endereço inexistente, por exemplo
+    /landing-escritorio-advocacia/a/b/c. O <base> faz os caminhos relativos abaixo
+    partirem sempre da raiz do site; sem ele, os estilos não carregariam.
+  -->
+  <base href="/landing-escritorio-advocacia/">
+  <title>Página não encontrada | Vasconcelos Torres Advogados (demonstração)</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/effects.css">
+  <script src="assets/js/marca-js.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
+</head>
+<body class="pagina-curta">
+  <!-- Sem link "pular para o conteúdo": com o <base>, "#conteudo" levaria à página inicial,
+       e o cabeçalho daqui tem um único link. O <main> já serve de atalho a leitores de tela. -->
+  <header class="topo">
+    <div class="topo__miolo">
+      <a class="marca" href="./" aria-label="Vasconcelos Torres Advogados, página inicial">
+        <span class="marca__nome">Vasconcelos Torres</span>
+        <span class="marca__tipo">Advogados</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <article class="texto-longo">
+      <h1 class="tarjado">Página não encontrada</h1>
+      <p>O endereço que você abriu não existe ou mudou. Nenhum dado foi registrado nesta visita.</p>
+      <p><a class="botao" href="./">Voltar ao início</a></p>
+    </article>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape__miolo">
+      <p class="rodape__aviso">Vasconcelos Torres Advogados, seus sócios e todo o conteúdo deste site são fictícios. Trata-se de um projeto de portfólio, sem relação com qualquer escritório real e sem oferta de serviços jurídicos.</p>
+    </div>
+  </footer>
+</body>
+</html>

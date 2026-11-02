@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Servidor estático mínimo, sem dependências.
 // Usado pelos testes E2E e por `npm run serve` (http://127.0.0.1:4173).
+// `npm run serve:pages` imita o GitHub Pages: o site fica em /landing-escritorio-advocacia/
+// e todo endereço inexistente recebe a página 404.html, com status 404.
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -19,7 +21,21 @@ const TIPOS = {
   '.ico': 'image/x-icon',
 };
 
-function criarServidor(raiz = RAIZ) {
+const PREFIXO_PAGES = '/landing-escritorio-advocacia';
+
+function criarServidor(raiz = RAIZ, { prefixo = '' } = {}) {
+  const naoEncontrado = (res) => {
+    if (!prefixo) {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('Não encontrado');
+    }
+    // Como no GitHub Pages: a página 404.html do site, com status 404.
+    fs.readFile(path.join(raiz, '404.html'), (erro, pagina) => {
+      res.writeHead(404, { 'Content-Type': erro ? 'text/plain; charset=utf-8' : TIPOS['.html'] });
+      res.end(erro ? 'Não encontrado' : pagina);
+    });
+  };
+
   return http.createServer((req, res) => {
     let caminho;
     try {
@@ -28,13 +44,15 @@ function criarServidor(raiz = RAIZ) {
       res.writeHead(400);
       return res.end('Requisição inválida');
     }
+    if (prefixo) {
+      if (caminho === prefixo) caminho += '/';
+      if (!caminho.startsWith(prefixo + '/')) return naoEncontrado(res);
+      caminho = caminho.slice(prefixo.length);
+    }
     if (caminho.endsWith('/')) caminho += 'index.html';
 
     // Nunca serve arquivos ocultos (.git, .github, .env...).
-    if (caminho.split('/').some((parte) => parte.startsWith('.'))) {
-      res.writeHead(404);
-      return res.end('Não encontrado');
-    }
+    if (caminho.split('/').some((parte) => parte.startsWith('.'))) return naoEncontrado(res);
 
     const arquivo = path.normalize(path.join(raiz, caminho));
     if (!arquivo.startsWith(raiz + path.sep)) {
@@ -43,10 +61,7 @@ function criarServidor(raiz = RAIZ) {
     }
 
     fs.readFile(arquivo, (erro, dados) => {
-      if (erro) {
-        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-        return res.end('Não encontrado');
-      }
+      if (erro) return naoEncontrado(res);
       res.writeHead(200, {
         'Content-Type': TIPOS[path.extname(arquivo)] || 'application/octet-stream',
         'Cache-Control': 'no-store',
@@ -60,7 +75,8 @@ module.exports = { criarServidor };
 
 if (require.main === module) {
   const porta = Number(process.env.PORT || 4173);
-  criarServidor().listen(porta, '127.0.0.1', () => {
-    console.log(`Servindo em http://127.0.0.1:${porta}`);
+  const prefixo = process.argv.includes('--pages') ? PREFIXO_PAGES : '';
+  criarServidor(RAIZ, { prefixo }).listen(porta, '127.0.0.1', () => {
+    console.log(`Servindo em http://127.0.0.1:${porta}${prefixo}/`);
   });
 }

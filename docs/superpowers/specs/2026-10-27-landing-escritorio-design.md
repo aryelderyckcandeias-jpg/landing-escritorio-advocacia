@@ -61,6 +61,7 @@ Não há cor de acento viva. O contraste do texto (`--papel` sobre `--mogno`) de
 | Contato | Formulário de demonstração |
 | Rodapé | Aviso de que o escritório e as pessoas são fictícios |
 | `privacidade.html` | Política de privacidade em página separada |
+| `404.html` | Página de endereço inexistente no GitHub Pages; usa `<base href="/landing-escritorio-advocacia/">` porque aparece em qualquer profundidade de endereço |
 
 Regras de conteúdo:
 
