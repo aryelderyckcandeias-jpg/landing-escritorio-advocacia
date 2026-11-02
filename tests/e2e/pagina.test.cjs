@@ -133,3 +133,14 @@ for (const caminho of PAGINAS) {
     await ctx.close();
   });
 }
+
+test('perguntas: abrir uma fecha a que estava aberta', async () => {
+  const ctx = await app.navegador.newContext();
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.click('.faq details:nth-child(1) summary');
+  await pagina.click('.faq details:nth-child(2) summary');
+  const abertas = await pagina.$$eval('.faq details', (lista) => lista.map((d) => d.open));
+  assert.deepEqual(abertas, [false, true, false, false, false]);
+  await ctx.close();
+});
