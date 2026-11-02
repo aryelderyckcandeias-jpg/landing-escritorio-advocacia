@@ -25,8 +25,10 @@ function ligarCanal(form) {
   const aplicar = () => {
     const canal = CANAIS[form.elements.canal.value] || CANAIS.email;
     rotulo.textContent = canal.rotulo;
-    campo.inputMode = canal.teclado;
-    campo.autocomplete = canal.preenchimento;
+    // Atributos, não propriedades: é o atributo que o navegador usa, e o Firefox não
+    // espelha a propriedade autocomplete do mesmo jeito que o Chrome.
+    campo.setAttribute('inputmode', canal.teclado);
+    campo.setAttribute('autocomplete', canal.preenchimento);
   };
 
   form.addEventListener('change', (evento) => {

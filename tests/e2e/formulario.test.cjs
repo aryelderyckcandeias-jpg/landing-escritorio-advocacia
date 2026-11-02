@@ -101,7 +101,7 @@ test('escolher Telefone ou E-mail troca o rótulo e o teclado do campo de contat
   const { ctx, pagina } = await abrir();
   const campo = () => pagina.evaluate(() => {
     const c = document.getElementById('campo-contact');
-    return { rotulo: c.labels[0].textContent.trim(), teclado: c.inputMode, preenchimento: c.autocomplete };
+    return { rotulo: c.labels[0].textContent.trim(), teclado: c.getAttribute('inputmode'), preenchimento: c.getAttribute('autocomplete') };
   });
   assert.deepEqual(await campo(), { rotulo: 'E-mail', teclado: 'email', preenchimento: 'email' });
   await pagina.check('input[name=canal][value=telefone]');
