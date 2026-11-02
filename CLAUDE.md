@@ -14,7 +14,8 @@ português, de forma direta. Quando houver escolha de aprendizado, guie em vez d
 - **Nenhum recurso de terceiros** (CDN, Google Fonts, analytics, cookies). O CSP é
   `default-src 'self'`: sem `<script>` inline e sem atributos `style=""` (use classes).
 - Caminhos **relativos** em todo o projeto (o Pages publica em `/landing-escritorio-advocacia/`).
-  Exceção: o `<base>` da `404.html`, que o Pages mostra em qualquer profundidade de endereço.
+  Exceções: o `<base>` da `404.html`, que o Pages mostra em qualquer profundidade de endereço,
+  e as meta tags de prévia (`og:url`, `og:image`), que os robôs de WhatsApp e LinkedIn leem de fora.
 - Efeitos: só tarjas (A) e holofote na primeira tela (B). Não adicionar outros.
 - **A luz e a tarja nunca podem esconder texto** sem JavaScript, com `prefers-reduced-motion`
   ou se o script falhar (veja `marca-js.js`).

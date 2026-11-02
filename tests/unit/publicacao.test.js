@@ -29,3 +29,36 @@ test('todas as páginas apontam para o ícone da tela inicial', () => {
     assert.match(html, /<link rel="apple-touch-icon" href="assets\/apple-touch-icon\.png">/, pagina);
   }
 });
+
+// Prévia ao compartilhar o link (WhatsApp, LinkedIn): meta tags Open Graph.
+// Aqui o endereço precisa ser completo (o robô do WhatsApp busca a imagem de fora do site).
+const ENDERECO = 'https://aryelderyckcandeias-jpg.github.io/landing-escritorio-advocacia/';
+
+function tamanhoDoJpeg(dados) {
+  // Procura o marcador SOF (0xFFC0 a 0xFFC2), onde ficam altura e largura.
+  for (let i = 2; i < dados.length; ) {
+    const marcador = dados.readUInt16BE(i);
+    if (marcador >= 0xffc0 && marcador <= 0xffc2) return { altura: dados.readUInt16BE(i + 5), largura: dados.readUInt16BE(i + 7) };
+    i += 2 + dados.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+test('prévia de compartilhamento: meta tags Open Graph completas na página inicial', () => {
+  const html = readFileSync(new URL('index.html', raiz), 'utf8');
+  const meta = (propriedade) => (html.match(new RegExp(`<meta (?:property|name)="${propriedade}" content="([^"]+)">`)) || [])[1];
+  for (const p of ['og:title', 'og:description', 'og:image:alt', 'og:locale', 'twitter:card']) assert.ok(meta(p), `falta ${p}`);
+  assert.equal(meta('og:url'), ENDERECO);
+  assert.ok(meta('og:image').startsWith(ENDERECO), `og:image fora do site: ${meta('og:image')}`);
+  assert.equal(meta('og:image:width'), '1200');
+  assert.equal(meta('og:image:height'), '630');
+  assert.equal(meta('twitter:card'), 'summary_large_image');
+});
+
+test('prévia de compartilhamento: a imagem existe, mede 1200x630 e é leve', () => {
+  const html = readFileSync(new URL('index.html', raiz), 'utf8');
+  const imagem = html.match(/<meta property="og:image" content="([^"]+)">/)[1].slice(ENDERECO.length);
+  const dados = readFileSync(new URL(imagem, raiz));
+  assert.deepEqual(tamanhoDoJpeg(dados), { altura: 630, largura: 1200 });
+  assert.ok(dados.length < 250 * 1024, `${Math.round(dados.length / 1024)} KB (o WhatsApp costuma ignorar imagens pesadas)`);
+});
