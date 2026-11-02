@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "serve": "node scripts/serve.cjs",
+    "serve:pages": "node scripts/serve.cjs --pages",
     "fonts": "node scripts/copiar-fontes.mjs",
-    "lint:html": "html-validate index.html privacidade.html",
+    "lint:html": "html-validate index.html privacidade.html 404.html",
     "test:unit": "node --test \"tests/unit/*.test.js\"",
     "test:e2e": "node --test \"tests/e2e/*.test.cjs\"",
     "test": "npm run test:unit && npm run test:e2e"

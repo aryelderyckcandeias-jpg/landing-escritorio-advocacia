@@ -133,3 +133,39 @@ for (const caminho of PAGINAS) {
     await ctx.close();
   });
 }
+
+test('perguntas: abrir uma fecha a que estava aberta', async () => {
+  const ctx = await app.navegador.newContext();
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.click('.faq details:nth-child(1) summary');
+  await pagina.click('.faq details:nth-child(2) summary');
+  const abertas = await pagina.$$eval('.faq details', (lista) => lista.map((d) => d.open));
+  assert.deepEqual(abertas, [false, true, false, false, false]);
+  await ctx.close();
+});
+
+test('seção Sigilo: entre Como atuamos e Sócios, com título tarjado e o espaçamento certo', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1440, height: 900 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  const r = await pagina.evaluate(() => {
+    const ordem = [...document.querySelectorAll('main > section')].map((s) => s.id);
+    const px = (sel, lado) => parseFloat(getComputedStyle(document.querySelector(sel))[lado]);
+    return {
+      ordem,
+      tarjado: document.querySelector('#sigilo h2')?.classList.contains('tarjado'),
+      itens: document.querySelectorAll('#sigilo li').length,
+      // Fundos diferentes: respiro inteiro. Mesmo fundo (Sócios -> Perguntas): meio respiro.
+      sociosTopo: px('#socios', 'paddingTop'),
+      sigiloPe: px('#sigilo', 'paddingBottom'),
+      perguntasTopo: px('#perguntas', 'paddingTop'),
+    };
+  });
+  assert.deepEqual(r.ordem.slice(2, 5), ['como-atuamos', 'sigilo', 'socios']);
+  assert.equal(r.tarjado, true);
+  assert.ok(r.itens >= 3, `${r.itens} itens`);
+  assert.equal(r.sociosTopo, r.sigiloPe, 'Sócios tem fundo diferente do Sigilo: respiro inteiro');
+  assert.equal(r.perguntasTopo, r.sociosTopo / 2, 'Perguntas repete o fundo de Sócios: meio respiro');
+  await ctx.close();
+});

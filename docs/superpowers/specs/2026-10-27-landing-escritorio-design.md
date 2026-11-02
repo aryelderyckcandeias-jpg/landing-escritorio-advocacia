@@ -55,11 +55,13 @@ Não há cor de acento viva. O contraste do texto (`--papel` sobre `--mogno`) de
 | Primeira tela | Título com tarjas e holofote |
 | Atuação | Inquérito e fase investigativa, crimes econômicos, Tribunal do Júri, habeas corpus e recursos, execução penal |
 | Como atuamos | 4 etapas numeradas, porque é uma sequência real |
+| Sigilo | 4 cuidados práticos com o sigilo (contato, reuniões, documentos, comunicação), em faixa com a cor da tarja; fora do menu |
 | Sócios | 2 perfis fictícios, com monograma em vez de foto |
 | Perguntas | Perguntas frequentes com `details`/`summary` |
 | Contato | Formulário de demonstração |
 | Rodapé | Aviso de que o escritório e as pessoas são fictícios |
 | `privacidade.html` | Política de privacidade em página separada |
+| `404.html` | Página de endereço inexistente no GitHub Pages; usa `<base href="/landing-escritorio-advocacia/">` porque aparece em qualquer profundidade de endereço |
 
 Regras de conteúdo:
 
@@ -71,7 +73,7 @@ Regras de conteúdo:
 ### Tarjas
 
 - Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`. A cobertura é desenhada em faixas, uma por linha; o vão entre elas fica no topo de cada linha para a faixa cobrir acentos e descendentes (ç, g, q). Títulos tarjados usam altura de linha 1,15.
-- Um `IntersectionObserver` adiciona a classe de abertura quando cerca de 40% do título está visível, e para de observar em seguida (acontece uma vez só).
+- Um `IntersectionObserver` adiciona a classe de abertura quando qualquer parte do título passa da linha a 75% da altura da tela (`rootMargin` de -25% embaixo, limiar 0), e para de observar em seguida (acontece uma vez só). Assim a tarja abre onde a pessoa está olhando, e o limiar 0 garante que até um título mais alto que a área abra. Duração de 900 ms (`--tempo-tarja`).
 - **Melhoria progressiva:** a cobertura só existe se a página marcar `html.js`. Sem JavaScript, o texto aparece normalmente.
 - Com `prefers-reduced-motion: reduce`, não há tarja nem animação: o texto aparece direto.
 - O texto está sempre no HTML e acessível a leitores de tela. A tarja é só uma camada visual.
@@ -87,6 +89,7 @@ Regras de conteúdo:
 ## 6. Formulário de contato (demonstração)
 
 - Campos: nome, e-mail ou telefone, assunto resumido e consentimento (caixa de seleção, não marcada por padrão).
+- Com JavaScript, a pessoa escolhe se prefere resposta por e-mail ou por telefone; a escolha troca o rótulo e o teclado do celular (`inputmode`, `autocomplete`). A validação aceita os dois de qualquer forma.
 - Validação no navegador, com mensagens de erro ligadas aos campos e anunciadas por `aria-live`.
 - Um campo oculto anti-spam (honeypot).
 - **Nada é enviado.** Ao confirmar, a página mostra uma mensagem informando que o formulário é de demonstração. O aviso fica visível junto ao formulário.
@@ -112,7 +115,7 @@ Regras de conteúdo:
 - Tipografia fluida com máximo de no máximo 2,5 vezes o mínimo, para o zoom conseguir dobrar o texto (WCAG 1.4.4).
 - Espaçamento de texto aumentado (WCAG 1.4.12) não corta nem tira conteúdo da tela.
 - Alvos de toque com pelo menos 24 × 24 px (WCAG 2.5.8), exceto links dentro de frases.
-- Cabeçalho em uma linha de 320 px em diante; menu a partir de 960 px.
+- Cabeçalho em uma linha de 320 px em diante; menu completo a partir de 960 px. Abaixo disso, um botão "Menu" (`<details>`, funciona sem JavaScript) abre as seções; abaixo de 600 px o "Contato sigiloso" fica dentro dele. Com JavaScript, o menu fecha ao escolher um link, com Esc e ao tocar fora.
 - Respeita `prefers-reduced-motion`.
 
 ## 9. Arquitetura de arquivos

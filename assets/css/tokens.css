@@ -56,6 +56,14 @@
   --medida: 62ch;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
+  /* Holofote da primeira tela. Mexa à vontade: o teste de contraste avisa se o texto perder leitura. */
+  --holofote-raio: 34rem; /* tamanho do círculo de luz */
+  --holofote-forca: 0.2; /* opacidade no centro da luz, de 0 a 1 */
+  --holofote-alcance: 70%; /* onde a luz acaba, em % do raio: maior = borda mais suave */
+  --holofote-x: 70%; /* posição inicial, antes de o cursor mexer */
+  --holofote-y: 30%;
+  --holofote-sumir: 60%; /* daqui para baixo (em % da altura da primeira tela) a luz vai sumindo */
+
   /* Tarja (em "em", acompanham o tamanho de cada título) */
   --tarja-vao: 0.06em; /* espaço entre as faixas de duas linhas */
   --tarja-descida: 0.06em; /* faixas descem para cobrir ç, g, q */

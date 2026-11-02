@@ -51,6 +51,12 @@
 }
 
 /* ---------- Holofote ---------- */
+/* Ajustes (raio, força, alcance, posição inicial) ficam em tokens.css, nas variáveis --holofote-*. */
+
+.hero[data-holofote] {
+  --lx: var(--holofote-x);
+  --ly: var(--holofote-y);
+}
 
 .hero[data-holofote]::before {
   content: "";
@@ -58,12 +64,16 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  /* Cor de --tungstenio (240 217 168) com a opacidade de --holofote-forca. */
   background: radial-gradient(
-    circle 34rem at var(--lx) var(--ly),
-    rgb(240 217 168 / 0.2),
-    rgb(240 217 168 / 0.07) 45%,
-    transparent 70%
+    circle var(--holofote-raio) at var(--lx) var(--ly),
+    rgb(240 217 168 / var(--holofote-forca)),
+    rgb(240 217 168 / calc(var(--holofote-forca) * 0.35)) calc(var(--holofote-alcance) * 0.65),
+    transparent var(--holofote-alcance)
   );
+  /* A luz some aos poucos antes do pé da primeira tela, em vez de ser cortada numa linha reta. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--holofote-sumir), transparent);
+  mask-image: linear-gradient(to bottom, #000 var(--holofote-sumir), transparent);
 }
 
 /* Telas de toque: a luz percorre a tela sozinha. */

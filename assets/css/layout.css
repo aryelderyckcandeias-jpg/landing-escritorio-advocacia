@@ -38,6 +38,83 @@
   }
 }
 
+/*
+  Menu do celular e do tablet (abaixo de 960 px): um <details>, que abre e fecha
+  sem JavaScript. O painel desce logo abaixo do cabeçalho, na largura toda.
+  Abaixo de 600 px o "Contato sigiloso" sai do cabeçalho e vai para dentro do painel.
+*/
+.menu-movel summary {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--papel-suave);
+  font-size: var(--texto-1);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.menu-movel summary::-webkit-details-marker {
+  display: none; /* marcador nativo do Safari */
+}
+
+.menu-movel[open] summary {
+  border-color: var(--papel);
+  background: var(--papel);
+  color: var(--mogno);
+}
+
+.menu-movel__painel {
+  position: absolute; /* em relação ao cabeçalho, que é sticky */
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: grid;
+  max-height: calc(100svh - 4rem); /* com zoom grande, o painel rola em vez de sumir */
+  overflow-y: auto;
+  padding: var(--espaco-2) var(--gutter) var(--espaco-5);
+  background: var(--mogno);
+  border-bottom: 1px solid var(--linha);
+}
+
+.menu-movel__painel a:not(.botao) {
+  padding-block: var(--espaco-3);
+  border-bottom: 1px solid var(--linha);
+  font-family: var(--fonte-titulo);
+  font-size: var(--texto-4);
+  text-decoration: none;
+}
+
+.topo .menu-movel__contato {
+  justify-self: start;
+  margin-top: var(--espaco-5);
+}
+
+.topo .topo__contato {
+  display: none;
+}
+
+@media (min-width: 37.5rem) {
+  .topo .topo__contato {
+    display: inline-block;
+  }
+
+  .topo .menu-movel__contato {
+    display: none;
+  }
+}
+
+/* Abaixo do menu completo, contato e botão de menu ficam juntos à direita. */
+@media (max-width: 59.99rem) {
+  .topo .topo__contato {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 60rem) {
+  .menu-movel {
+    display: none;
+  }
+}
+
 @media (min-width: 30rem) {
   .topo__miolo {
     gap: var(--espaco-5);
@@ -106,18 +183,22 @@
 /*
   Seções seguidas com o mesmo fundo não somam dois respiros inteiros.
   Depois da primeira tela, o respiro dela basta (o título "Atuação" aparece
-  inteiro no pé da tela). Entre duas seções comuns, meio respiro a mais.
+  inteiro no pé da tela). Entre duas seções comuns (fundo mogno), meio respiro a mais.
 */
-.hero + .secao:not(.secao--bordo) {
+.hero + .secao:not(.secao--bordo):not(.secao--tarja) {
   padding-top: 0;
 }
 
-.secao:not(.secao--bordo) + .secao:not(.secao--bordo) {
+.secao:not(.secao--bordo):not(.secao--tarja) + .secao:not(.secao--bordo):not(.secao--tarja) {
   padding-top: calc(var(--espaco-secao) / 2);
 }
 
 .secao--bordo {
   background: var(--bordo);
+}
+
+.secao--tarja {
+  background: var(--tarja);
 }
 
 .secao__miolo,
@@ -144,7 +225,8 @@
 }
 
 @media (min-width: 60rem) {
-  .secao--duas {
+  .secao--duas,
+  .sigilo {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
     gap: var(--espaco-8);
   }
@@ -168,6 +250,17 @@
 .texto-longo h2 {
   margin-top: var(--espaco-5);
   font-size: var(--texto-5);
+}
+
+/* Página de pouco conteúdo (404): o rodapé fica no pé da tela, não no meio. */
+.pagina-curta {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.pagina-curta main {
+  flex: 1;
 }
 
 /* Rodapé */

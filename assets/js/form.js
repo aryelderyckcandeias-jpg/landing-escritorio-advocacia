@@ -10,6 +10,35 @@ const CAMPOS = ['name', 'contact', 'subject', 'consent'];
 const AVISO_DEMO =
   'Formulário de demonstração: nada foi enviado nem guardado. Este escritório é fictício.';
 
+// Canal de resposta escolhido: muda o rótulo e o teclado do celular no campo de contato.
+// A validação não muda: validateContact aceita e-mail e telefone.
+const CANAIS = {
+  email: { rotulo: 'E-mail', teclado: 'email', preenchimento: 'email' },
+  telefone: { rotulo: 'Telefone com DDD', teclado: 'tel', preenchimento: 'tel' },
+};
+
+function ligarCanal(form) {
+  const campo = form.elements.contact;
+  const rotulo = form.querySelector('label[for="campo-contact"]');
+  if (!form.elements.canal || !rotulo) return;
+
+  const aplicar = () => {
+    const canal = CANAIS[form.elements.canal.value] || CANAIS.email;
+    rotulo.textContent = canal.rotulo;
+    // Atributos, não propriedades: é o atributo que o navegador usa, e o Firefox não
+    // espelha a propriedade autocomplete do mesmo jeito que o Chrome.
+    campo.setAttribute('inputmode', canal.teclado);
+    campo.setAttribute('autocomplete', canal.preenchimento);
+  };
+
+  form.addEventListener('change', (evento) => {
+    if (evento.target.name === 'canal') aplicar();
+  });
+  // O reset volta as opções ao padrão sem disparar "change"; aplica depois que ele termina.
+  form.addEventListener('reset', () => setTimeout(aplicar));
+  aplicar();
+}
+
 function mostrarErros(form, errors) {
   for (const campo of CAMPOS) {
     const entrada = form.elements[campo];
@@ -30,6 +59,7 @@ function mostrarErros(form, errors) {
 export function initForm(form) {
   if (!form) return;
   const status = document.getElementById('contato-status');
+  ligarCanal(form);
 
   form.addEventListener('submit', (evento) => {
     evento.preventDefault(); // nunca envia nada

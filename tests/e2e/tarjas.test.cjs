@@ -108,3 +108,80 @@ test('toque: a luz anda sozinha e fica pausada fora da tela, mesmo depois de tro
   await pagina.waitForFunction(() => !document.querySelector('.hero').classList.contains('holofote-pausado'));
   await ctx.close();
 });
+
+test('holofote: depois que o cursor para, a luz chega até ele', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  await pagina.mouse.move(300, 200);
+  await pagina.mouse.move(500, 400, { steps: 4 });
+  await pagina.waitForTimeout(1500);
+  const { lx, ly, esquerda, topo } = await pagina.$eval('.hero', (el) => {
+    const caixa = el.getBoundingClientRect();
+    return { lx: parseFloat(el.style.getPropertyValue('--lx')), ly: parseFloat(el.style.getPropertyValue('--ly')), esquerda: caixa.left, topo: caixa.top };
+  });
+  assert.ok(Math.abs(lx - (500 - esquerda)) <= 2, `luz em x=${lx}, cursor em ${500 - esquerda}`);
+  assert.ok(Math.abs(ly - (400 - topo)) <= 2, `luz em y=${ly}, cursor em ${400 - topo}`);
+  await ctx.close();
+});
+
+test('holofote: com movimento reduzido a luz não segue o cursor', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  await pagina.mouse.move(500, 400, { steps: 4 });
+  await pagina.waitForTimeout(500);
+  assert.equal(await pagina.$eval('.hero', (el) => el.style.getPropertyValue('--lx')), '');
+  await ctx.close();
+});
+
+test('a tarja abre onde a pessoa olha: não no quarto de baixo da tela, sim acima dele', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 390, height: 844 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  // Coloca o topo do título a uma altura da tela (fração de 0 a 1) e espera um pouco.
+  const posicionar = async (fracao) => {
+    await pagina.evaluate((f) => {
+      const titulo = document.querySelector('#titulo-socios');
+      const topo = titulo.getBoundingClientRect().top + scrollY;
+      window.scrollTo({ top: topo - innerHeight * f, behavior: 'instant' });
+    }, fracao);
+    await pagina.waitForTimeout(250);
+    return pagina.$eval('#titulo-socios', (el) => el.classList.contains('aberto'));
+  };
+  assert.equal(await posicionar(0.88), false, 'no quarto de baixo da tela a tarja ainda não abre');
+  assert.equal(await posicionar(0.6), true, 'acima do quarto de baixo a tarja abre');
+  await ctx.close();
+});
+
+test('com zoom de 400% (tela 320x256) todas as tarjas abrem ao chegar nelas', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 320, height: 256 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  const fechadas = [];
+  for (const id of await pagina.$$eval('.tarjado', (els) => els.map((e) => e.id))) {
+    await pagina.locator('#' + id).scrollIntoViewIfNeeded();
+    await pagina.waitForTimeout(250);
+    if (!(await pagina.$eval('#' + id, (el) => el.classList.contains('aberto')))) fechadas.push(id);
+  }
+  assert.deepEqual(fechadas, []);
+  await ctx.close();
+});
+
+test('o título principal abre sozinho ao carregar em qualquer tela', async () => {
+  const fechados = [];
+  for (const [largura, altura] of [[1440, 900], [390, 844], [844, 390], [667, 375], [320, 256]]) {
+    const ctx = await app.navegador.newContext({ viewport: { width: largura, height: altura } });
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + '/');
+    await pagina.waitForSelector('html.js-pronto');
+    await pagina.waitForTimeout(300);
+    if (!(await pagina.$eval('#titulo-hero', (el) => el.classList.contains('aberto')))) fechados.push(`${largura}x${altura}`);
+    await ctx.close();
+  }
+  assert.deepEqual(fechados, []);
+});

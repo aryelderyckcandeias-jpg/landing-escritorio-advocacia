@@ -96,3 +96,44 @@ test('campos com fonte de pelo menos 16 px (o iPhone dá zoom sozinho em campos 
   for (const [id, px] of tamanhos) assert.ok(px >= 16, `${id}: ${px}px`);
   await ctx.close();
 });
+
+test('escolher Telefone ou E-mail troca o rótulo e o teclado do campo de contato', async () => {
+  const { ctx, pagina } = await abrir();
+  const campo = () => pagina.evaluate(() => {
+    const c = document.getElementById('campo-contact');
+    return { rotulo: c.labels[0].textContent.trim(), teclado: c.getAttribute('inputmode'), preenchimento: c.getAttribute('autocomplete') };
+  });
+  assert.deepEqual(await campo(), { rotulo: 'E-mail', teclado: 'email', preenchimento: 'email' });
+  await pagina.check('input[name=canal][value=telefone]');
+  assert.deepEqual(await campo(), { rotulo: 'Telefone com DDD', teclado: 'tel', preenchimento: 'tel' });
+  await pagina.check('input[name=canal][value=email]');
+  assert.equal((await campo()).teclado, 'email');
+  await ctx.close();
+});
+
+test('formulário válido com telefone escolhido mostra o aviso de demonstração', async () => {
+  const { ctx, pagina } = await abrir();
+  const rede = vigiarRede(pagina);
+  await pagina.check('input[name=canal][value=telefone]');
+  await pagina.fill('#campo-name', 'Ana Souza');
+  await pagina.fill('#campo-contact', '(11) 91234-5678');
+  await pagina.fill('#campo-subject', 'Quero marcar uma conversa inicial.');
+  await pagina.check('#campo-consent');
+  await pagina.click('#contato button[type=submit]');
+  await pagina.waitForFunction(() => /demonstra/i.test(document.getElementById('contato-status').textContent));
+  assert.deepEqual(rede.requisicoes, []);
+  // Depois de limpar o formulário, a opção volta para E-mail e o rótulo precisa acompanhar.
+  await pagina.waitForTimeout(100);
+  assert.equal(await pagina.isChecked('input[name=canal][value=email]'), true);
+  assert.equal((await pagina.locator('label[for=campo-contact]').textContent()).trim(), 'E-mail');
+  await ctx.close();
+});
+
+test('sem JavaScript a escolha de canal não aparece e o campo aceita os dois', async () => {
+  const ctx = await app.navegador.newContext({ javaScriptEnabled: false });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  assert.equal(await pagina.locator('.campo--canal').isVisible(), false);
+  assert.equal((await pagina.locator('label[for=campo-contact]').textContent()).trim(), 'E-mail ou telefone');
+  await ctx.close();
+});

@@ -7,8 +7,21 @@
   <meta name="robots" content="noindex">
   <meta name="description" content="Página de demonstração de um escritório de advocacia criminal fictício. Projeto de portfólio.">
   <meta name="theme-color" content="#1c1113">
+  <!-- Prévia ao compartilhar o link. Endereços completos: quem lê é o robô do WhatsApp ou do LinkedIn. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Vasconcelos Torres Advogados (demonstração)">
+  <meta property="og:title" content="Vasconcelos Torres Advogados | Defesa criminal (demonstração)">
+  <meta property="og:description" content="Landing page de um escritório de advocacia criminal fictício, com tarjas, holofote, acessibilidade e testes automatizados. Projeto de portfólio.">
+  <meta property="og:url" content="https://aryelderyckcandeias-jpg.github.io/landing-escritorio-advocacia/">
+  <meta property="og:image" content="https://aryelderyckcandeias-jpg.github.io/landing-escritorio-advocacia/assets/previa.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Primeira tela da página: o título Defesa criminal conduzida com discrição sobre fundo escuro e uma folha de documento com trechos tarjados.">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Vasconcelos Torres Advogados | Defesa criminal (demonstração)</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
@@ -33,7 +46,17 @@
         <a href="#socios">Sócios</a>
         <a href="#perguntas">Perguntas</a>
       </nav>
-      <a class="botao botao--pequeno" href="#contato">Contato sigiloso</a>
+      <a class="botao botao--pequeno topo__contato" href="#contato">Contato sigiloso</a>
+      <details class="menu-movel">
+        <summary>Menu</summary>
+        <nav class="menu-movel__painel" aria-label="Menu">
+          <a href="#atuacao">Atuação</a>
+          <a href="#como-atuamos">Como atuamos</a>
+          <a href="#socios">Sócios</a>
+          <a href="#perguntas">Perguntas</a>
+          <a class="botao menu-movel__contato" href="#contato">Contato sigiloso</a>
+        </nav>
+      </details>
     </div>
   </header>
 
@@ -120,6 +143,33 @@
       </div>
     </section>
 
+    <section class="secao secao--tarja" id="sigilo" aria-labelledby="titulo-sigilo">
+      <div class="secao__miolo sigilo">
+        <div class="secao__cabeca">
+          <h2 id="titulo-sigilo" class="tarjado">Sigilo</h2>
+          <p>O sigilo profissional é dever do advogado, previsto no Estatuto da Advocacia. Na prática, ele aparece em cuidados simples, desde o primeiro contato.</p>
+        </div>
+        <ul class="areas">
+          <li class="area">
+            <h3>Primeiro contato sem detalhes</h3>
+            <p>Pelo site ou por telefone pedimos apenas nome e uma forma de contato. O caso é tratado depois, em conversa com o advogado.</p>
+          </li>
+          <li class="area">
+            <h3>Reuniões em local reservado</h3>
+            <p>No escritório, em sala fechada, ou por videochamada com acesso restrito a quem participa.</p>
+          </li>
+          <li class="area">
+            <h3>Documentos com acesso restrito</h3>
+            <p>Cópias de autos e documentos ficam disponíveis apenas para a equipe que atua no caso.</p>
+          </li>
+          <li class="area">
+            <h3>Comunicação combinada com você</h3>
+            <p>Definimos juntos por qual canal falar e o que pode ou não ser dito por mensagem.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <section class="secao" id="socios" aria-labelledby="titulo-socios">
       <div class="secao__miolo">
         <h2 id="titulo-socios" class="tarjado">Sócios</h2>
@@ -146,23 +196,23 @@
         <h2 id="titulo-perguntas" class="tarjado">Perguntas frequentes</h2>
       </div>
       <div class="faq">
-        <details>
+        <details name="perguntas">
           <summary>A primeira conversa é realmente sigilosa?</summary>
           <p>O sigilo profissional é um dever do advogado, previsto no Estatuto da Advocacia (Lei 8.906/1994), e vale desde o primeiro contato, mesmo que o contrato não seja fechado.</p>
         </details>
-        <details>
+        <details name="perguntas">
           <summary>Preciso de advogado já na fase de inquérito?</summary>
           <p>É possível, e geralmente recomendável, ter acompanhamento desde o início. A Súmula Vinculante 14 do STF garante ao defensor acesso aos elementos de prova já documentados na investigação.</p>
         </details>
-        <details>
+        <details name="perguntas">
           <summary>O escritório garante resultado?</summary>
           <p>Não. A advocacia é uma atividade de meio: o compromisso é com a melhor defesa possível, e as regras da profissão proíbem prometer resultado.</p>
         </details>
-        <details>
+        <details name="perguntas">
           <summary>Como são definidos os honorários?</summary>
           <p>Depois da análise do caso, em contrato escrito, com valores e forma de pagamento combinados antes do início do trabalho.</p>
         </details>
-        <details>
+        <details name="perguntas">
           <summary>Posso contar o meu caso pelo formulário do site?</summary>
           <p>Não. Use o formulário apenas para pedir contato. Detalhes do caso devem ser tratados em conversa reservada com o advogado.</p>
         </details>
@@ -183,6 +233,14 @@
             <input id="campo-name" name="name" type="text" autocomplete="name" aria-describedby="erro-name" maxlength="120" required>
             <p class="erro" id="erro-name" hidden></p>
           </div>
+
+          <fieldset class="campo campo--canal">
+            <legend>Como prefere receber a resposta?</legend>
+            <div class="canais">
+              <label><input type="radio" name="canal" value="email" checked> E-mail</label>
+              <label><input type="radio" name="canal" value="telefone"> Telefone</label>
+            </div>
+          </fieldset>
 
           <div class="campo">
             <label for="campo-contact">E-mail ou telefone</label>

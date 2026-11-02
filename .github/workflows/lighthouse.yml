@@ -20,7 +20,7 @@ jobs:
       - run: npm ci
       - run: |
           mkdir _site
-          cp index.html privacidade.html _site/
+          cp index.html privacidade.html 404.html _site/
           cp -r assets _site/assets
       - name: "Lighthouse (metas: Desempenho, Acessibilidade e Boas práticas, nota mínima 95)"
         run: npx --yes @lhci/cli@0.14.0 autorun

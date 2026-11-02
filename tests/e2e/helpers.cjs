@@ -8,8 +8,9 @@ const NAVEGADOR = process.env.NAVEGADOR || 'chromium';
 // Contexto de celular. O Firefox do Playwright não emula "isMobile", só o toque.
 const celular = { hasTouch: true, ...(NAVEGADOR === 'firefox' ? {} : { isMobile: true }) };
 
-async function iniciar() {
-  const servidor = criarServidor();
+// opcoes.prefixo imita o GitHub Pages: o site fica em /prefixo/ e endereço inexistente recebe 404.html.
+async function iniciar(opcoes = {}) {
+  const servidor = criarServidor(undefined, opcoes);
   await new Promise((ok) => servidor.listen(0, '127.0.0.1', ok));
   const base = `http://127.0.0.1:${servidor.address().port}`;
   const navegador = await playwright[NAVEGADOR].launch();
