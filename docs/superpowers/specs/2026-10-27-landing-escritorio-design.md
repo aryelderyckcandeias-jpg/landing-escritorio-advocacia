@@ -55,6 +55,7 @@ Não há cor de acento viva. O contraste do texto (`--papel` sobre `--mogno`) de
 | Primeira tela | Título com tarjas e holofote |
 | Atuação | Inquérito e fase investigativa, crimes econômicos, Tribunal do Júri, habeas corpus e recursos, execução penal |
 | Como atuamos | 4 etapas numeradas, porque é uma sequência real |
+| Sigilo | 4 cuidados práticos com o sigilo (contato, reuniões, documentos, comunicação), em faixa com a cor da tarja; fora do menu |
 | Sócios | 2 perfis fictícios, com monograma em vez de foto |
 | Perguntas | Perguntas frequentes com `details`/`summary` |
 | Contato | Formulário de demonstração |

@@ -106,18 +106,22 @@
 /*
   Seções seguidas com o mesmo fundo não somam dois respiros inteiros.
   Depois da primeira tela, o respiro dela basta (o título "Atuação" aparece
-  inteiro no pé da tela). Entre duas seções comuns, meio respiro a mais.
+  inteiro no pé da tela). Entre duas seções comuns (fundo mogno), meio respiro a mais.
 */
-.hero + .secao:not(.secao--bordo) {
+.hero + .secao:not(.secao--bordo):not(.secao--tarja) {
   padding-top: 0;
 }
 
-.secao:not(.secao--bordo) + .secao:not(.secao--bordo) {
+.secao:not(.secao--bordo):not(.secao--tarja) + .secao:not(.secao--bordo):not(.secao--tarja) {
   padding-top: calc(var(--espaco-secao) / 2);
 }
 
 .secao--bordo {
   background: var(--bordo);
+}
+
+.secao--tarja {
+  background: var(--tarja);
 }
 
 .secao__miolo,
@@ -144,7 +148,8 @@
 }
 
 @media (min-width: 60rem) {
-  .secao--duas {
+  .secao--duas,
+  .sigilo {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
     gap: var(--espaco-8);
   }
