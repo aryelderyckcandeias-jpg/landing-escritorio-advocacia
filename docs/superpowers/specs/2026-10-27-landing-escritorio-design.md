@@ -88,6 +88,7 @@ Regras de conteúdo:
 ## 6. Formulário de contato (demonstração)
 
 - Campos: nome, e-mail ou telefone, assunto resumido e consentimento (caixa de seleção, não marcada por padrão).
+- Com JavaScript, a pessoa escolhe se prefere resposta por e-mail ou por telefone; a escolha troca o rótulo e o teclado do celular (`inputmode`, `autocomplete`). A validação aceita os dois de qualquer forma.
 - Validação no navegador, com mensagens de erro ligadas aos campos e anunciadas por `aria-live`.
 - Um campo oculto anti-spam (honeypot).
 - **Nada é enviado.** Ao confirmar, a página mostra uma mensagem informando que o formulário é de demonstração. O aviso fica visível junto ao formulário.

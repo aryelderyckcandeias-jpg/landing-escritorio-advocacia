@@ -420,6 +420,48 @@
   font-weight: 600;
 }
 
+/* Escolha do canal de resposta: só aparece com JavaScript, porque sem ele não teria efeito. */
+.campo--canal {
+  display: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.js .campo--canal {
+  display: grid;
+}
+
+.campo--canal legend {
+  padding: 0;
+  margin-bottom: var(--espaco-2);
+  font-size: var(--texto-2);
+  font-weight: 600;
+}
+
+.canais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-3) var(--espaco-6);
+}
+
+.campo .canais label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  font-size: var(--texto-3);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.canais input {
+  width: 1.5rem; /* 24 px: tamanho mínimo de alvo de toque */
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--tungstenio);
+}
+
 .campo--marca {
   grid-template-columns: auto 1fr;
   align-items: start;
