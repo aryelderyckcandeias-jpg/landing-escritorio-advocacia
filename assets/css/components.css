@@ -420,17 +420,16 @@
   font-weight: 600;
 }
 
-/* Escolha do canal de resposta: só aparece com JavaScript, porque sem ele não teria efeito. */
+/*
+  Escolha do canal de resposta: começa com "hidden" e o form.js a mostra. Assim ela aparece
+  exatamente quando o script que lhe dá efeito roda (sem JavaScript, não teria efeito).
+*/
 .campo--canal {
-  display: none;
+  display: grid;
   min-width: 0;
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-.js .campo--canal {
-  display: grid;
 }
 
 .campo--canal legend {

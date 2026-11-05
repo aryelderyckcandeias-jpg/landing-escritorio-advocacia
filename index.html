@@ -229,13 +229,18 @@
         </div>
 
         <form id="contato" class="formulario" novalidate autocomplete="on">
+          <noscript>
+            <p class="aviso">Este formulário de demonstração precisa de JavaScript. Sem ele, nada acontece ao enviar, e nada é enviado.</p>
+          </noscript>
+          <p class="dica">Todos os campos são obrigatórios.</p>
+
           <div class="campo">
             <label for="campo-name">Nome</label>
             <input id="campo-name" name="name" type="text" autocomplete="name" aria-describedby="erro-name" maxlength="120" required>
             <p class="erro" id="erro-name" hidden></p>
           </div>
 
-          <fieldset class="campo campo--canal">
+          <fieldset class="campo campo--canal" hidden>
             <legend>Como prefere receber a resposta?</legend>
             <div class="canais">
               <label><input type="radio" name="canal" value="email" checked> E-mail</label>
@@ -262,7 +267,7 @@
           </div>
 
           <div class="campo campo--marca">
-            <input id="campo-consent" name="consent" type="checkbox" aria-describedby="erro-consent">
+            <input id="campo-consent" name="consent" type="checkbox" aria-describedby="erro-consent" required>
             <label for="campo-consent">Li a <a href="privacidade.html">política de privacidade</a>.</label>
             <p class="erro" id="erro-consent" hidden></p>
           </div>

@@ -97,6 +97,11 @@ textarea {
   top: var(--espaco-4);
 }
 
+/* "hidden" sempre esconde, mesmo em elementos com display definido no CSS (grid, flex). */
+[hidden] {
+  display: none !important;
+}
+
 /* Texto só para leitores de tela */
 .so-leitor {
   position: absolute;

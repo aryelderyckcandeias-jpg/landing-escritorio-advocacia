@@ -20,7 +20,9 @@ const CANAIS = {
 function ligarCanal(form) {
   const campo = form.elements.contact;
   const rotulo = form.querySelector('label[for="campo-contact"]');
-  if (!form.elements.canal || !rotulo) return;
+  const escolha = form.querySelector('.campo--canal');
+  if (!form.elements.canal || !rotulo || !escolha) return;
+  escolha.hidden = false; // só aparece quando este script roda
 
   const aplicar = () => {
     const canal = CANAIS[form.elements.canal.value] || CANAIS.email;
