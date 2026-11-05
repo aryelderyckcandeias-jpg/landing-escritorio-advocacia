@@ -74,3 +74,13 @@ test('sem JavaScript o menu do celular abre e fecha sozinho (details)', async ()
   assert.equal(await pagina.locator('.menu-movel__painel a[href="#atuacao"]').isVisible(), false);
   await ctx.close();
 });
+
+test('o menu do celular e o do desktop levam às mesmas seções', async () => {
+  const { ctx, pagina } = await abrir(1280);
+  const destinos = await pagina.evaluate(() => ({
+    desktop: [...document.querySelectorAll('.menu a')].map((a) => a.getAttribute('href')),
+    celular: [...document.querySelectorAll('.menu-movel__painel a:not(.botao)')].map((a) => a.getAttribute('href')),
+  }));
+  assert.deepEqual(destinos.celular, destinos.desktop);
+  await ctx.close();
+});
