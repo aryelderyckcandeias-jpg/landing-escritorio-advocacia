@@ -115,7 +115,7 @@ e [plano](docs/superpowers/plans/2026-10-27-landing-escritorio-implementacao.md)
 
 ## Como rodar
 
-Requisitos: Node.js 20 ou superior.
+Requisitos: Node.js 22.22 ou superior (ou 24.8+), exigido pelo validador de HTML.
 
 ```bash
 npm ci                 # instala as dependências nas versões do package-lock.json

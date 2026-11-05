@@ -5,7 +5,7 @@
   "description": "Landing page de um escritório de advocacia criminal fictício (projeto de portfólio).",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": "^22.22.0 || >=24.8.0"
   },
   "scripts": {
     "serve": "node scripts/serve.cjs",
@@ -20,7 +20,7 @@
     "@axe-core/playwright": "^4.10.0",
     "@fontsource-variable/bodoni-moda": "^5.0.0",
     "@fontsource-variable/hanken-grotesk": "^5.0.0",
-    "html-validate": "^9.0.0",
+    "html-validate": "^11.18.0",
     "playwright": "^1.50.0"
   }
 }
