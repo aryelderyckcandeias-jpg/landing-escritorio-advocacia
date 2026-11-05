@@ -1,0 +1,60 @@
+/*
+  PRINT (impressão)
+  Papel branco e texto escuro, sem tarja, sem luz e sem navegação.
+  Carregado com media="print": não atrasa a página na tela.
+*/
+
+*,
+*::before,
+*::after {
+  background: transparent !important;
+  color: #1c1113 !important; /* --mogno como tinta: contraste de 18:1 no papel */
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Tarja e luz são efeitos de tela: no papel, o texto aparece inteiro. */
+.tarjado::after,
+.hero::before {
+  display: none !important;
+}
+
+/* Navegação, botões e decoração não servem no papel. */
+.pular,
+.menu,
+.menu-movel,
+.topo .botao,
+.documento,
+.hero__acoes,
+.formulario {
+  display: none !important;
+}
+
+.topo {
+  position: static !important;
+  border: 0 !important;
+}
+
+.hero {
+  min-height: 0 !important;
+  padding-block: 0 2rem !important;
+}
+
+/* Endereço dos links externos, já que no papel não dá para clicar. */
+a[href^="http"]::after {
+  content: " (" attr(href) ")";
+}
+
+/* Evita títulos sozinhos no pé da página e blocos cortados ao meio. */
+h1,
+h2,
+h3 {
+  break-after: avoid;
+}
+
+.area,
+.etapa,
+.socio,
+.faq details {
+  break-inside: avoid;
+}
