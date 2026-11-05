@@ -80,3 +80,14 @@ test('CSP: igual em todas as páginas, sem inline e sem data:', () => {
     assert.ok(!csp.includes(brecha), `CSP permite ${brecha}: ${csp}`);
   }
 });
+
+// Pré-carregamento das fontes: se um arquivo for renomeado, o preload baixaria algo que não existe.
+test('fontes pré-carregadas existem e são as mesmas do fonts.css', () => {
+  const fontesDoCss = [...readFileSync(new URL('assets/css/fonts.css', raiz), 'utf8').matchAll(/url\("\.\.\/fonts\/([^"]+)"\)/g)].map((m) => m[1]).sort();
+  for (const pagina of paginas) {
+    const html = readFileSync(new URL(pagina, raiz), 'utf8');
+    const preloads = [...html.matchAll(/<link rel="preload" href="assets\/fonts\/([^"]+)" as="font" type="font\/woff2" crossorigin>/g)].map((m) => m[1]).sort();
+    assert.deepEqual(preloads, fontesDoCss, pagina);
+    for (const fonte of preloads) readFileSync(new URL(`assets/fonts/${fonte}`, raiz));
+  }
+});
