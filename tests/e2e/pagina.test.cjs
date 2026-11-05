@@ -182,3 +182,16 @@ test('alto contraste: todo botão tem contorno visível', async () => {
   assert.deepEqual(semContorno, []);
   await ctx.close();
 });
+
+// Link que abre em nova aba avisa isso a quem usa leitor de tela.
+for (const caminho of PAGINAS) {
+  test(`${caminho}: links que abrem em nova aba avisam`, async () => {
+    const ctx = await app.navegador.newContext();
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + caminho);
+    const semAviso = await pagina.$$eval('a[target=_blank]', (links) =>
+      links.filter((a) => !/nova aba/.test(a.textContent)).map((a) => a.textContent.trim()));
+    assert.deepEqual(semAviso, []);
+    await ctx.close();
+  });
+}
