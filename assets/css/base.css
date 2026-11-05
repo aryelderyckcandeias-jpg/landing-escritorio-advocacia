@@ -11,6 +11,7 @@
 }
 
 html {
+  color-scheme: dark; /* controles nativos e barras de rolagem no tema escuro */
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;

@@ -195,3 +195,15 @@ for (const caminho of PAGINAS) {
     await ctx.close();
   });
 }
+
+// A página é escura: os controles nativos (caixas, botões de opção, rolagem) também.
+for (const caminho of PAGINAS) {
+  test(`${caminho}: avisa o navegador que é uma página escura (color-scheme)`, async () => {
+    const ctx = await app.navegador.newContext();
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + caminho);
+    assert.equal(await pagina.getAttribute('meta[name="color-scheme"]', 'content'), 'dark');
+    assert.equal(await pagina.evaluate(() => getComputedStyle(document.documentElement).colorScheme), 'dark');
+    await ctx.close();
+  });
+}
