@@ -31,13 +31,18 @@
     to bottom,
     transparent 0,
     transparent var(--tarja-vao),
-    var(--tarja) var(--tarja-vao),
-    var(--tarja) 1lh
+    var(--tarja-cor, var(--tarja)) var(--tarja-vao),
+    var(--tarja-cor, var(--tarja)) 1lh
   );
   transform-origin: right center;
   transform: scaleX(1);
   transition: transform var(--tempo-tarja) var(--curva);
   pointer-events: none;
+}
+
+/* Na seção de fundo preto (Sigilo), uma faixa preta seria invisível: ali ela usa o mogno. */
+.secao--tarja {
+  --tarja-cor: var(--mogno);
 }
 
 .js .tarjado.aberto::after {

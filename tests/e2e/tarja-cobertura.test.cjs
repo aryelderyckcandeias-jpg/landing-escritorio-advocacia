@@ -76,3 +76,29 @@ for (const [largura, altura] of [[1440, 900], [390, 844], [320, 640]]) {
     await ctx.close();
   });
 }
+
+test('a tarja fechada se distingue do fundo da seção em todos os títulos', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1440, height: 900 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto');
+  const invisiveis = await pagina.evaluate(() => {
+    const rgb = (texto) => texto.match(/rgba?\(([^)]+)\)/)[1].split(',').slice(0, 3).map((v) => parseFloat(v) / 255);
+    const lum = (c) => c.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+      .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+    const fundoDe = (el) => {
+      for (let n = el; n; n = n.parentElement) {
+        const cor = getComputedStyle(n).backgroundColor;
+        if (cor !== 'rgba(0, 0, 0, 0)' && cor !== 'transparent') return cor;
+      }
+      return getComputedStyle(document.body).backgroundColor;
+    };
+    return [...document.querySelectorAll('.tarjado')].map((el) => {
+      const corDaTarja = getComputedStyle(el, '::after').backgroundImage.match(/rgba?\([^)]+\)/g).find((c) => !/, 0\)$/.test(c));
+      const [a, b] = [lum(rgb(corDaTarja)), lum(rgb(fundoDe(el)))].sort((x, y) => y - x);
+      return { id: el.id, razao: (a + 0.05) / (b + 0.05) };
+    }).filter((t) => t.razao < 1.1).map((t) => `${t.id}: ${t.razao.toFixed(2)}:1`);
+  });
+  assert.deepEqual(invisiveis, []);
+  await ctx.close();
+});
