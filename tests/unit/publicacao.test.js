@@ -62,3 +62,21 @@ test('prévia de compartilhamento: a imagem existe, mede 1200x630 e é leve', ()
   assert.deepEqual(tamanhoDoJpeg(dados), { altura: 630, largura: 1200 });
   assert.ok(dados.length < 250 * 1024, `${Math.round(dados.length / 1024)} KB (o WhatsApp costuma ignorar imagens pesadas)`);
 });
+
+// Segurança: o mesmo Content-Security-Policy em todas as páginas, sem brechas que não usamos.
+test('CSP: igual em todas as páginas, sem inline e sem data:', () => {
+  const politicas = paginas.map((pagina) => {
+    const html = readFileSync(new URL(pagina, raiz), 'utf8');
+    const achou = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
+    assert.ok(achou, `${pagina} sem CSP`);
+    return achou[1];
+  });
+  assert.equal(new Set(politicas).size, 1, `CSPs diferentes: ${[...new Set(politicas)].join(' / ')}`);
+  const csp = politicas[0];
+  for (const regra of ["default-src 'self'", "form-action 'none'", "base-uri 'self'", "object-src 'none'"]) {
+    assert.ok(csp.includes(regra), `falta ${regra}`);
+  }
+  for (const brecha of ["'unsafe-inline'", "'unsafe-eval'", 'data:', '*']) {
+    assert.ok(!csp.includes(brecha), `CSP permite ${brecha}: ${csp}`);
+  }
+});
