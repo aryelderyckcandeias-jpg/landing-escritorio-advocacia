@@ -4,6 +4,9 @@
   "private": true,
   "description": "Landing page de um escritório de advocacia criminal fictício (projeto de portfólio).",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "serve": "node scripts/serve.cjs",
     "serve:pages": "node scripts/serve.cjs --pages",

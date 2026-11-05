@@ -205,7 +205,6 @@
 .etapas {
   display: grid;
   gap: var(--espaco-7) var(--espaco-6);
-  counter-reset: etapa;
 }
 
 @media (min-width: 48rem) {
