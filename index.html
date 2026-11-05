@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="robots" content="noindex">
   <meta name="description" content="Página de demonstração de um escritório de advocacia criminal fictício. Projeto de portfólio.">
   <meta name="theme-color" content="#1c1113">
+  <meta name="color-scheme" content="dark">
   <!-- Prévia ao compartilhar o link. Endereços completos: quem lê é o robô do WhatsApp ou do LinkedIn. -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
@@ -22,12 +23,16 @@
   <title>Vasconcelos Torres Advogados | Defesa criminal (demonstração)</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <!-- As fontes começam a baixar junto com o CSS, sem esperar o fonts.css ser lido. -->
+  <link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/effects.css">
+  <link rel="stylesheet" href="assets/css/print.css" media="print">
   <script src="assets/js/marca-js.js"></script>
   <script type="module" src="assets/js/main.js"></script>
 </head>
@@ -228,13 +233,18 @@
         </div>
 
         <form id="contato" class="formulario" novalidate autocomplete="on">
+          <noscript>
+            <p class="aviso">Este formulário de demonstração precisa de JavaScript. Sem ele, nada acontece ao enviar, e nada é enviado.</p>
+          </noscript>
+          <p class="dica">Todos os campos são obrigatórios.</p>
+
           <div class="campo">
             <label for="campo-name">Nome</label>
             <input id="campo-name" name="name" type="text" autocomplete="name" aria-describedby="erro-name" maxlength="120" required>
             <p class="erro" id="erro-name" hidden></p>
           </div>
 
-          <fieldset class="campo campo--canal">
+          <fieldset class="campo campo--canal" hidden>
             <legend>Como prefere receber a resposta?</legend>
             <div class="canais">
               <label><input type="radio" name="canal" value="email" checked> E-mail</label>
@@ -261,7 +271,7 @@
           </div>
 
           <div class="campo campo--marca">
-            <input id="campo-consent" name="consent" type="checkbox" aria-describedby="erro-consent">
+            <input id="campo-consent" name="consent" type="checkbox" aria-describedby="erro-consent" required>
             <label for="campo-consent">Li a <a href="privacidade.html">política de privacidade</a>.</label>
             <p class="erro" id="erro-consent" hidden></p>
           </div>
@@ -278,7 +288,7 @@
       <p class="rodape__aviso">Vasconcelos Torres Advogados, seus sócios e todo o conteúdo desta página são fictícios. Trata-se de um projeto de portfólio, sem relação com qualquer escritório real e sem oferta de serviços jurídicos.</p>
       <p class="rodape__links">
         <a href="privacidade.html">Política de privacidade</a>
-        <a href="https://github.com/aryelderyckcandeias-jpg/landing-escritorio-advocacia" rel="noopener noreferrer" target="_blank">Código-fonte no GitHub</a>
+        <a href="https://github.com/aryelderyckcandeias-jpg/landing-escritorio-advocacia" rel="noopener noreferrer" target="_blank">Código-fonte no GitHub<span class="so-leitor"> (abre em nova aba)</span></a>
       </p>
     </div>
   </footer>

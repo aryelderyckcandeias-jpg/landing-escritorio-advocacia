@@ -25,7 +25,7 @@ for (const caminho of ['/', '/privacidade.html']) {
       await pagina.waitForTimeout(1200); // tarjas abertas antes de medir contraste
       await pagina.evaluate(() => document.querySelectorAll('.tarjado').forEach((e) => e.classList.add('aberto')));
       await pagina.waitForTimeout(1100);
-      const resultado = await new AxeBuilder({ page: pagina }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+      const resultado = await new AxeBuilder({ page: pagina }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa', 'best-practice']).analyze();
       const resumo = resultado.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`);
       assert.deepEqual(resumo, [], `violações (${reducedMotion})`);
       await ctx.close();

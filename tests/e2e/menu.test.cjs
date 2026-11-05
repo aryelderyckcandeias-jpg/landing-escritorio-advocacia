@@ -74,3 +74,34 @@ test('sem JavaScript o menu do celular abre e fecha sozinho (details)', async ()
   assert.equal(await pagina.locator('.menu-movel__painel a[href="#atuacao"]').isVisible(), false);
   await ctx.close();
 });
+
+test('o menu do celular e o do desktop levam às mesmas seções', async () => {
+  const { ctx, pagina } = await abrir(1280);
+  const destinos = await pagina.evaluate(() => ({
+    desktop: [...document.querySelectorAll('.menu a')].map((a) => a.getAttribute('href')),
+    celular: [...document.querySelectorAll('.menu-movel__painel a:not(.botao)')].map((a) => a.getAttribute('href')),
+  }));
+  assert.deepEqual(destinos.celular, destinos.desktop);
+  await ctx.close();
+});
+
+test('celular: sair do menu com Tab fecha o painel (ele cobriria o elemento focado)', async () => {
+  const { ctx, pagina } = await abrir(390);
+  await pagina.focus('.menu-movel summary');
+  await pagina.keyboard.press('Enter');
+  const links = await pagina.locator('.menu-movel__painel a').count();
+  for (let i = 0; i < links; i++) await pagina.keyboard.press('Tab');
+  assert.equal(await pagina.$eval('.menu-movel', (d) => d.open), true, 'ainda dentro do menu, no último link');
+  await pagina.keyboard.press('Tab');
+  assert.equal(await pagina.$eval('.menu-movel', (d) => d.open), false, 'o foco saiu do menu');
+  await ctx.close();
+});
+
+test('celular: clicar num espaço vazio do painel não fecha o menu', async () => {
+  const { ctx, pagina } = await abrir(390);
+  await pagina.click('.menu-movel summary');
+  const painel = await pagina.locator('.menu-movel__painel').boundingBox();
+  await pagina.mouse.click(painel.x + painel.width - 10, painel.y + painel.height - 8);
+  assert.equal(await pagina.$eval('.menu-movel', (d) => d.open), true);
+  await ctx.close();
+});

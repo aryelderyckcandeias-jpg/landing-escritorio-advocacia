@@ -181,3 +181,14 @@ no holofote. Itens feitos, cada um com teste antes e a suíte completa depois: m
 (`<details>`), perguntas exclusivas, seção Sigilo, escolha de e-mail ou telefone no formulário,
 página 404 com `<base>` e ícone da tela inicial, prévia Open Graph e README como estudo de caso.
 O CI nos três navegadores encontrou uma diferença do Firefox (leitura de `autocomplete`), corrigida.
+
+### Análise e melhorias (05/11/2026)
+
+Análise com axe (WCAG 2.2 e boas práticas), todas as auditorias do Lighthouse, `npm audit`,
+leitura do código e testes de cenários que os testes não cobriam (impressão, alto contraste,
+internet lenta, sem JavaScript). Corrigido, cada item com teste: impressão com títulos cobertos,
+botões sem contorno no alto contraste, menu cobrindo o foco, escolha do formulário com internet
+lenta, formulário sem retorno sem JavaScript, obrigatórios não indicados, aviso de nova aba,
+CSP com `data:`, controles nativos claros, tarja invisível na seção preta, vazamento da tarja no
+WebKit (achado pelo novo teste de cobertura) e 3 vulnerabilidades moderadas (html-validate 11).
+Pré-carregar as fontes levou o Lighthouse da página inicial de 99 para 100.

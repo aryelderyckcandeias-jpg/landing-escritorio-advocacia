@@ -72,7 +72,7 @@ Regras de conteúdo:
 
 ### Tarjas
 
-- Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`. A cobertura é desenhada em faixas, uma por linha; o vão entre elas fica no topo de cada linha para a faixa cobrir acentos e descendentes (ç, g, q). Títulos tarjados usam altura de linha 1,15.
+- Cada título marcado recebe uma camada de cobertura (`::after`) que se recolhe com `transform: scaleX()`. A cobertura é desenhada em faixas, uma por linha; o vão entre elas fica no topo de cada linha para a faixa cobrir acentos e descendentes (ç, g, q). Títulos tarjados usam altura de linha 1,2, com vão e descida de 0,07em: valores escolhidos medindo a tinta dos títulos no Chromium, no Firefox e no WebKit. Na seção de fundo preto, a faixa usa o mogno (`--tarja-cor`) para continuar visível.
 - Um `IntersectionObserver` adiciona a classe de abertura quando qualquer parte do título passa da linha a 75% da altura da tela (`rootMargin` de -25% embaixo, limiar 0), e para de observar em seguida (acontece uma vez só). Assim a tarja abre onde a pessoa está olhando, e o limiar 0 garante que até um título mais alto que a área abra. Duração de 900 ms (`--tempo-tarja`).
 - **Melhoria progressiva:** a cobertura só existe se a página marcar `html.js`. Sem JavaScript, o texto aparece normalmente.
 - Com `prefers-reduced-motion: reduce`, não há tarja nem animação: o texto aparece direto.
@@ -117,6 +117,8 @@ Regras de conteúdo:
 - Alvos de toque com pelo menos 24 × 24 px (WCAG 2.5.8), exceto links dentro de frases.
 - Cabeçalho em uma linha de 320 px em diante; menu completo a partir de 960 px. Abaixo disso, um botão "Menu" (`<details>`, funciona sem JavaScript) abre as seções; abaixo de 600 px o "Contato sigiloso" fica dentro dele. Com JavaScript, o menu fecha ao escolher um link, com Esc e ao tocar fora.
 - Respeita `prefers-reduced-motion`.
+- Modo de alto contraste do Windows: botões com contorno (borda transparente). Impressão sem tarja, com tinta escura.
+- Campos obrigatórios indicados; o menu do celular fecha quando o foco sai dele.
 
 ## 9. Arquitetura de arquivos
 

@@ -137,3 +137,36 @@ test('sem JavaScript a escolha de canal não aparece e o campo aceita os dois', 
   assert.equal((await pagina.locator('label[for=campo-contact]').textContent()).trim(), 'E-mail ou telefone');
   await ctx.close();
 });
+
+test('internet lenta (main.js depois de 3 s): a escolha de canal aparece e combina com o rótulo', async () => {
+  const ctx = await app.navegador.newContext();
+  await ctx.route('**/assets/js/main.js', async (rota) => {
+    await new Promise((pronto) => setTimeout(pronto, 3500));
+    await rota.continue();
+  });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  await pagina.waitForSelector('html.js-pronto', { timeout: 15000 });
+  assert.equal(await pagina.locator('.campo--canal').isVisible(), true, 'a escolha aparece quando o script roda');
+  assert.equal((await pagina.locator('label[for=campo-contact]').textContent()).trim(), 'E-mail');
+  await ctx.close();
+});
+
+test('sem JavaScript o formulário avisa que não funciona, em vez de não fazer nada', async () => {
+  const ctx = await app.navegador.newContext({ javaScriptEnabled: false });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  const aviso = pagina.locator('#contato noscript p');
+  assert.equal(await aviso.isVisible(), true);
+  assert.match(await aviso.textContent(), /precisa de JavaScript/);
+  await ctx.close();
+});
+
+test('campos obrigatórios: indicados na tela e marcados para leitores de tela', async () => {
+  const { ctx, pagina } = await abrir();
+  assert.equal(await pagina.locator('#contato').getByText('Todos os campos são obrigatórios.').isVisible(), true);
+  const semRequired = await pagina.$$eval('#campo-name, #campo-contact, #campo-subject, #campo-consent', (campos) =>
+    campos.filter((c) => !c.required).map((c) => c.id));
+  assert.deepEqual(semRequired, []);
+  await ctx.close();
+});

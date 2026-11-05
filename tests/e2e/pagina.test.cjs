@@ -169,3 +169,41 @@ test('seção Sigilo: entre Como atuamos e Sócios, com título tarjado e o espa
   assert.equal(r.perguntasTopo, r.sociosTopo / 2, 'Perguntas repete o fundo de Sócios: meio respiro');
   await ctx.close();
 });
+
+// Alto contraste do Windows: as cores de fundo somem. Botões precisam de contorno próprio.
+test('alto contraste: todo botão tem contorno visível', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 }, forcedColors: 'active' });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  const semContorno = await pagina.$$eval('.botao, .menu-movel summary', (botoes) => botoes
+    .filter((b) => b.getClientRects().length > 0)
+    .filter((b) => { const c = getComputedStyle(b); return c.borderTopStyle === 'none' || parseFloat(c.borderTopWidth) < 1; })
+    .map((b) => b.textContent.trim()));
+  assert.deepEqual(semContorno, []);
+  await ctx.close();
+});
+
+// Link que abre em nova aba avisa isso a quem usa leitor de tela.
+for (const caminho of PAGINAS) {
+  test(`${caminho}: links que abrem em nova aba avisam`, async () => {
+    const ctx = await app.navegador.newContext();
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + caminho);
+    const semAviso = await pagina.$$eval('a[target=_blank]', (links) =>
+      links.filter((a) => !/nova aba/.test(a.textContent)).map((a) => a.textContent.trim()));
+    assert.deepEqual(semAviso, []);
+    await ctx.close();
+  });
+}
+
+// A página é escura: os controles nativos (caixas, botões de opção, rolagem) também.
+for (const caminho of PAGINAS) {
+  test(`${caminho}: avisa o navegador que é uma página escura (color-scheme)`, async () => {
+    const ctx = await app.navegador.newContext();
+    const pagina = await ctx.newPage();
+    await pagina.goto(app.base + caminho);
+    assert.equal(await pagina.getAttribute('meta[name="color-scheme"]', 'content'), 'dark');
+    assert.equal(await pagina.evaluate(() => getComputedStyle(document.documentElement).colorScheme), 'dark');
+    await ctx.close();
+  });
+}

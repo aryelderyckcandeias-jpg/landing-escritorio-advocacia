@@ -54,7 +54,7 @@ test('página 404 sem violações no axe', { skip: !AxeBuilder && '@axe-core/pla
   await pagina.waitForSelector('html.js-pronto');
   await pagina.evaluate(() => document.querySelectorAll('.tarjado').forEach((e) => e.classList.add('aberto')));
   await pagina.waitForTimeout(1100);
-  const r = await new AxeBuilder({ page: pagina }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  const r = await new AxeBuilder({ page: pagina }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa', 'best-practice']).analyze();
   assert.deepEqual(r.violations.map((v) => v.id), []);
   await ctx.close();
 });

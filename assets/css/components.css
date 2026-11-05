@@ -40,10 +40,10 @@
 /* Botões e links */
 .botao {
   display: inline-block;
-  padding: 0.85rem 1.5rem;
+  padding: calc(0.85rem - 1px) calc(1.5rem - 1px); /* desconta a borda: o tamanho não muda */
   background: var(--papel);
   color: var(--mogno);
-  border: 0;
+  border: 1px solid transparent; /* invisível na tela; no alto contraste do Windows vira o contorno */
   border-radius: 0;
   font-weight: 600;
   font-size: var(--texto-2);
@@ -53,13 +53,13 @@
 }
 
 .botao--pequeno {
-  padding: 0.55rem 0.75rem;
+  padding: calc(0.55rem - 1px) calc(0.75rem - 1px);
   font-size: var(--texto-1);
 }
 
 @media (min-width: 30rem) {
   .botao--pequeno {
-    padding-inline: 1rem;
+    padding-inline: calc(1rem - 1px);
   }
 }
 
@@ -205,7 +205,6 @@
 .etapas {
   display: grid;
   gap: var(--espaco-7) var(--espaco-6);
-  counter-reset: etapa;
 }
 
 @media (min-width: 48rem) {
@@ -420,17 +419,16 @@
   font-weight: 600;
 }
 
-/* Escolha do canal de resposta: só aparece com JavaScript, porque sem ele não teria efeito. */
+/*
+  Escolha do canal de resposta: começa com "hidden" e o form.js a mostra. Assim ela aparece
+  exatamente quando o script que lhe dá efeito roda (sem JavaScript, não teria efeito).
+*/
 .campo--canal {
-  display: none;
+  display: grid;
   min-width: 0;
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-.js .campo--canal {
-  display: grid;
 }
 
 .campo--canal legend {
