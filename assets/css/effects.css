@@ -11,7 +11,7 @@
   position: relative;
   width: fit-content;
   max-width: 100%;
-  line-height: 1.15; /* folga para a tarja cobrir acentos e descendentes */
+  line-height: 1.2; /* folga para a tarja cobrir acentos e descendentes em todos os navegadores */
 }
 
 /*

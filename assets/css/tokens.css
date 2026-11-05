@@ -65,8 +65,8 @@
   --holofote-sumir: 60%; /* daqui para baixo (em % da altura da primeira tela) a luz vai sumindo */
 
   /* Tarja (em "em", acompanham o tamanho de cada título) */
-  --tarja-vao: 0.06em; /* espaço entre as faixas de duas linhas */
-  --tarja-descida: 0.06em; /* faixas descem para cobrir ç, g, q */
+  --tarja-vao: 0.07em; /* espaço entre as faixas de duas linhas */
+  --tarja-descida: 0.07em; /* faixas descem para cobrir ç, g, q */
 
   /* Movimento */
   --tempo-tarja: 900ms;
