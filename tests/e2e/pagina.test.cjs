@@ -169,3 +169,16 @@ test('seção Sigilo: entre Como atuamos e Sócios, com título tarjado e o espa
   assert.equal(r.perguntasTopo, r.sociosTopo / 2, 'Perguntas repete o fundo de Sócios: meio respiro');
   await ctx.close();
 });
+
+// Alto contraste do Windows: as cores de fundo somem. Botões precisam de contorno próprio.
+test('alto contraste: todo botão tem contorno visível', async () => {
+  const ctx = await app.navegador.newContext({ viewport: { width: 1280, height: 800 }, forcedColors: 'active' });
+  const pagina = await ctx.newPage();
+  await pagina.goto(app.base + '/');
+  const semContorno = await pagina.$$eval('.botao, .menu-movel summary', (botoes) => botoes
+    .filter((b) => b.getClientRects().length > 0)
+    .filter((b) => { const c = getComputedStyle(b); return c.borderTopStyle === 'none' || parseFloat(c.borderTopWidth) < 1; })
+    .map((b) => b.textContent.trim()));
+  assert.deepEqual(semContorno, []);
+  await ctx.close();
+});
